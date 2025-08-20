@@ -35,7 +35,7 @@ export default function CitizenDashboard() {
     if (closedIssues.length > 0) {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/feedback/batch",
+          "/api/feedback/batch",
           {
             headers: { Authorization: `Bearer ${token}` },
             params: {
@@ -64,15 +64,15 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        navigate("/");
+        navigate("https://civicconnect-nfew.onrender.com");
         return;
       }
 
       const [citizenRes, issuesRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/citizen/me", {
+        axios.get("/api/citizen/me", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:5000/api/issues/my", {
+        axios.get("/api/issues/my", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -124,7 +124,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/issues/report",
+        "/api/issues/report",
         newIssueData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -142,7 +142,7 @@ export default function CitizenDashboard() {
       setExporting(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/issues/export-issues",
+        "/api/issues/export-issues",
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob"
@@ -165,7 +165,7 @@ export default function CitizenDashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("https://civicconnect-nfew.onrender.com");
   };
 
   const closeModal = () => {
@@ -181,7 +181,7 @@ export default function CitizenDashboard() {
   try {
      const token = localStorage.getItem("token");
     await axios.post(
-      "http://localhost:5000/api/feedback/submit",
+      "/api/feedback/submit",
       { issueId, rating, comment },
       { headers: { Authorization: `Bearer ${token}` } }
     );
