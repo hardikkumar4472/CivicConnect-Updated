@@ -57,7 +57,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
         const token = localStorage.getItem('token');
         console.log('Fetching citizen data with token:', token ? 'Present' : 'Missing');
         
-        const response = await axios.get('http://localhost:5000/api/citizen/me', {
+        const response = await axios.get('/api/citizen/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -193,7 +193,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
       // Show success message and redirect to citizen dashboard
       alert('Issue submitted successfully! Redirecting to dashboard...');
       onClose();
-      navigate('/citizen-dashboard');
+      navigate('https://civicconnect-nfew.onrender.com/citizen-dashboard');
       
     } catch (error) {
       console.error('Error submitting issue:', error);
