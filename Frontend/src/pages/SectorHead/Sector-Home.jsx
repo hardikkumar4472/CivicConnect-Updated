@@ -59,18 +59,18 @@ export default function SectorHeadDashboard() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          navigate("/sectorHead-login");
+          navigate("https://civicconnect-nfew.onrender.com/sectorHead-login");
           return;
         }
         
         const [sectorRes, issuesRes, summaryRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/sector-head/me", {
+          axios.get("/api/sector-head/me", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("http://localhost:5000/api/sector-head/issues", {
+          axios.get("/api/sector-head/issues", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("http://localhost:5000/api/sector-head/dashboard-summary", {
+          axios.get("/api/sector-head/dashboard-summary", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
@@ -113,7 +113,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/sector-head/analytics",
+        "/api/sector-head/analytics",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalytics(response.data);
@@ -134,7 +134,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5000/api/sector-head/citizen/${issue.raisedBy}`,
+        `/api/sector-head/citizen/${issue.raisedBy}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -164,7 +164,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/issues/${issueId}/status`,
+        `/api/issues/${issueId}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -408,7 +408,7 @@ export default function SectorHeadDashboard() {
           <button 
             onClick={() => {
               localStorage.removeItem("token");
-              navigate("/");
+              navigate("https://civicconnect-nfew.onrender.com");
             }}
             style={{
               padding: '10px 15px',
