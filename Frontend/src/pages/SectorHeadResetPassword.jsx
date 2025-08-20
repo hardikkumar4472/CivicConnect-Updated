@@ -32,7 +32,7 @@ const SectorHeadResetPassword = () => {
       );
       
       toast.success('Password reset successfully!');
-      navigate('https://civicconnect-nfew.onrender.com');
+      navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Error resetting password');
     } finally {
@@ -88,7 +88,7 @@ const SectorHeadResetPassword = () => {
         </form>
         
         <button 
-          onClick={() => navigate('https://civicconnect-nfew.onrender.com')} 
+          onClick={() => navigate('/')} 
           style={styles.backButton}
         >
           <i className="fas fa-arrow-left" style={{ marginRight: '8px' }}></i>
