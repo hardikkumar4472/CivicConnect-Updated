@@ -27,7 +27,7 @@ const SectorHeadResetPassword = () => {
     
     try {
       await axios.post(
-        `http://localhost:5000/api/sector-head/reset-password/${token}`,
+        `https://civicconnect-backend.onrender.com/api/sector-head/reset-password/${token}`,
         { password }
       );
       
