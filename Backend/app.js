@@ -15,13 +15,16 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',                 
-    'https://civicconnect-nfew.onrender.com' 
-  ],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS blocked: " + origin));
+    }
+  },
+  credentials: true,
 }));
-
+app.options("*", cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/sector-head', sectorHeadRoutes);
 app.use('/api/citizen', citizenRoutes);
