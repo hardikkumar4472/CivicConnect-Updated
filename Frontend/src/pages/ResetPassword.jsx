@@ -61,7 +61,7 @@ const ResetPassword = () => {
     
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/citizen/reset-password/${token}`,
+        `/api/citizen/reset-password/${token}`,
         { password: formData.password }
       );
       
@@ -246,7 +246,7 @@ const ResetPassword = () => {
           style={styles.footer}
         >
           <motion.button 
-            onClick={() => navigate('/')} 
+            onClick={() => navigate('https://civicconnect-nfew.onrender.com')} 
             style={styles.secondaryButton}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
