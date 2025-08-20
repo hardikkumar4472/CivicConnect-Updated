@@ -13,7 +13,7 @@ const DashboardSummaryModal = ({ dashboardSummary: initialSummary, onClose }) =>
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/sector-head/dashboard-summary");
+        const { data } = await axios.get("https://civicconnect-backend.onrender.com/api/sector-head/dashboard-summary");
         console.log("Fetched summary from backend:", data);
         setSummary(data);
       } catch (err) {
