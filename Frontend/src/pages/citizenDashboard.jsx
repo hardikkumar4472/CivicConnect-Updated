@@ -64,7 +64,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        navigate("https://civicconnect-nfew.onrender.com");
+        navigate("/");
         return;
       }
 
@@ -165,7 +165,7 @@ export default function CitizenDashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("https://civicconnect-nfew.onrender.com");
+    navigate("/");
   };
 
   const closeModal = () => {
