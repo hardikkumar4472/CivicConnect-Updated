@@ -61,7 +61,7 @@ const ResetPassword = () => {
     
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/citizen/reset-password/${token}`,
+        `https://civicconnect-backend.onrender.com/api/citizen/reset-password/${token}`,
         { password: formData.password }
       );
       
