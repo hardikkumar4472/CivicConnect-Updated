@@ -64,13 +64,13 @@ export default function SectorHeadDashboard() {
         }
         
         const [sectorRes, issuesRes, summaryRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/sector-head/me", {
+          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/me", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("http://localhost:5000/api/sector-head/issues", {
+          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/issues", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("http://localhost:5000/api/sector-head/dashboard-summary", {
+          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/dashboard-summary", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
@@ -113,7 +113,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/sector-head/analytics",
+        "https://civicconnect-backend.onrender.com/api/sector-head/analytics",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalytics(response.data);
@@ -134,7 +134,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:5000/api/sector-head/citizen/${issue.raisedBy}`,
+        `https://civicconnect-backend.onrender.com/api/sector-head/citizen/${issue.raisedBy}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -164,7 +164,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/issues/${issueId}/status`,
+        `https://civicconnect-backend.onrender.com/api/issues/${issueId}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
