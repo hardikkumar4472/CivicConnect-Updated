@@ -13,7 +13,7 @@ const DashboardSummaryModal = ({ dashboardSummary: initialSummary, onClose }) =>
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/sector-head/dashboard-summary");
+        const { data } = await axios.get("/api/sector-head/dashboard-summary");
         console.log("Fetched summary from backend:", data);
         setSummary(data);
       } catch (err) {
@@ -31,7 +31,7 @@ const DashboardSummaryModal = ({ dashboardSummary: initialSummary, onClose }) =>
 
   const handleViewAllIssues = () => {
     onClose();
-    navigate('/sectorHead-dashboard');
+    navigate('https://civicconnect-nfew.onrender.com/sectorHead-dashboard');
   };
 
   // Prepare data for charts
