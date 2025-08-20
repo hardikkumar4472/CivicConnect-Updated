@@ -28,12 +28,12 @@ const BroadcastPage = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        navigate('/sectorHead-login');
+        navigate('https://civicconnect-nfew.onrender.com/sectorHead-dashboard');
         return;
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/sector-head/broadcast',
+        '/api/sector-head/broadcast',
         formData,
         {
           headers: {
@@ -46,7 +46,7 @@ const BroadcastPage = () => {
       if (response.data.success) {
         setSuccess(true);
         setTimeout(() => {
-          navigate('/sector-dashboard');
+          navigate('/sectorHead-dashboard');
         }, 2000);
       }
     } catch (err) {
@@ -130,7 +130,7 @@ const BroadcastPage = () => {
             <div style={styles.buttonGroup}>
               <button
                 type="button"
-                onClick={() => navigate('/sectorHead-dashboard')}
+                onClick={() => navigate('https://civicconnect-nfew.onrender.com/sectorHead-dashboard')}
                 style={styles.cancelButton}
                 disabled={loading}
               >
