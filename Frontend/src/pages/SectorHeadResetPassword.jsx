@@ -27,12 +27,12 @@ const SectorHeadResetPassword = () => {
     
     try {
       await axios.post(
-        `http://localhost:5000/api/sector-head/reset-password/${token}`,
+        `/api/sector-head/reset-password/${token}`,
         { password }
       );
       
       toast.success('Password reset successfully!');
-      navigate('/');
+      navigate('https://civicconnect-nfew.onrender.com');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Error resetting password');
     } finally {
@@ -88,7 +88,7 @@ const SectorHeadResetPassword = () => {
         </form>
         
         <button 
-          onClick={() => navigate('/')} 
+          onClick={() => navigate('https://civicconnect-nfew.onrender.com')} 
           style={styles.backButton}
         >
           <i className="fas fa-arrow-left" style={{ marginRight: '8px' }}></i>
