@@ -33,7 +33,7 @@ const ForgotPassword = () => {
     
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/citizen/forgot-password', 
+        'https://civicconnect-backend.onrender.com/api/citizen/forgot-password', 
         { email }
       );
       
