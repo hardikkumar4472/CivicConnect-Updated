@@ -55,7 +55,7 @@ function Home() {
     }));
 
     try {
-      const url = `http://localhost:5000${endpoint}`;
+      const url = `https://civicconnect-backend.onrender.com/${endpoint}`;
       const res = await axios.post(url, {
         email: loginData[role].email,
         password: loginData[role].password
