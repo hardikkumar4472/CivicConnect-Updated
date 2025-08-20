@@ -7,7 +7,7 @@ function TopBar() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate("https://civicconnect-nfew.onrender.com");
   };
 
   return (
