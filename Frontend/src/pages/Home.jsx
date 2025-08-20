@@ -323,7 +323,7 @@ function Home() {
         {/* Footer */}
         <footer style={styles.footer}>
           <div style={styles.loginFooter}>
-            <Link to="https://civicconnect-nfew.onrender.com/forgot-password" style={styles.forgotPassword}>Forgot Password?</Link>
+            <Link to="/forgot-password" style={styles.forgotPassword}>Forgot Password?</Link>
             <div style={styles.secureLogin}>
               <i className="fas fa-shield-alt" style={styles.shieldIcon}></i> Secure Municipal Portal
             </div>
