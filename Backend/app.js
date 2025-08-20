@@ -15,9 +15,13 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'https://civicconnect-nfew.onrender.com',
+  origin: [
+    'http://localhost:5173',                 
+    'https://civicconnect-nfew.onrender.com' 
+  ],
   credentials: true
 }));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/sector-head', sectorHeadRoutes);
 app.use('/api/citizen', citizenRoutes);
