@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!token) {
-      navigate("/admin-login");
+      navigate("https://civicconnect-nfew.onrender.com/admin-login");
       return;
     }
 
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
 
   const fetchAdminDetails = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/issues/profile", {
+      const res = await axios.get("/api/issues/profile", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAdminName(res.data.name);
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
 
   const fetchDashboard = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/issues/dashboard-summary", {
+      const res = await axios.get("/api/issues/dashboard-summary", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDashboardData(res.data);
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
 
   const fetchSectors = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/issues/sectors", {
+      const res = await axios.get("/api/issues/sectors", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectors(res.data);
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
 
   const fetchSectorRatings = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/feedback/sector-ratings", {
+      const res = await axios.get("/api/feedback/sector-ratings", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectorRatings(res.data);
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
   const sendBroadcast = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/issues/broadcast", 
+        "/api/issues/broadcast", 
         { subject: broadcastSubject, message: broadcastMsg },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
   const createSectorHead = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/sector-head/register",
+        "/api/sector-head/register",
         sectorHeadData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
 
   const downloadCSV = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/issues/export-issues", {
+      const response = await axios.get("/api/issues/export-issues", {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob", 
       });
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
 
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("https://civicconnect-nfew.onrender.com");
   };
 
   if (loading) {
