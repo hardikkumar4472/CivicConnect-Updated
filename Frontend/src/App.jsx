@@ -58,11 +58,11 @@ import ResetPassword from "./pages/ResetPassword";
 import SectorHeadResetPassword from "./pages/SectorHeadResetPassword";
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="https://civicconnect-nfew.onrender.com" />;
+  return token ? children : <Navigate to="/" />;
 };
 const CitizenPrivateRoute = ({ children }) => {
   const token = localStorage.getItem("citizenToken"); // Assuming you use 'citizenToken' for citizens
-  return token ? children : <Navigate to="https://civicconnect-nfew.onrender.com" />;
+  return token ? children : <Navigate to="/" />;
 };
 
 
@@ -73,12 +73,12 @@ export default function App() {
     <div style={{ minHeight: "100vh", backgroundColor: "#f0f2f5" }}>
       <Router>
         <Routes>
-          <Route path="https://civicconnect-nfew.onrender.com/" element={<HomePage />} />
-          <Route path="https://civicconnect-nfew.onrender.com/forgot-password" element={<ForgotPassword />} />
-          <Route path="https://civicconnect-nfew.onrender.com/reset-password/:token" element={<ResetPassword />} />
-          <Route path="https://civicconnect-nfew.onrender.com/sector-head/reset-password/:token" element={<SectorHeadResetPassword />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/sector-head/reset-password/:token" element={<SectorHeadResetPassword />} />
           <Route
-            path="https://civicconnect-nfew.onrender.com/admin-dashboard"
+            path="/admin-dashboard"
             element={
               <PrivateRoute>
                 <AdminDashboard />
@@ -86,7 +86,7 @@ export default function App() {
             }
           />
           <Route
-            path="https://civicconnect-nfew.onrender.com/sectorHead-dashboard"
+            path="/sectorHead-dashboard"
             element={
               <PrivateRoute>
                 <SectorHeadHome />
@@ -94,7 +94,7 @@ export default function App() {
             }
           />
           <Route
-            path="https://civicconnect-nfew.onrender.com/send-broadcast"
+            path="/send-broadcast"
             element={
               <PrivateRoute>
                 <BroadcastPage />
@@ -102,7 +102,7 @@ export default function App() {
             }
           />
 <Route
-  path="https://civicconnect-nfew.onrender.com/citizen-dashboard"
+  path="/citizen-dashboard"
   element={
     <PrivateRoute>
       <CitizenDashboard />
