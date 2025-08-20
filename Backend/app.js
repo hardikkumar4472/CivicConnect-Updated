@@ -6,7 +6,7 @@ import sectorHeadRoutes from './routes/sectorHead.js';
 import citizenRoutes from './routes/citizenRoutes.js';
 import issueRoutes from './routes/issueRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
-import adminRoutes from '../Backend/routes/adminRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import cors from 'cors';
 
 
@@ -15,7 +15,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://civicconnect-nfew.onrender.com',
   credentials: true
 }));
 app.use('/api/auth', authRoutes);
@@ -24,8 +24,4 @@ app.use('/api/citizen', citizenRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/issues', adminRoutes);
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 export default app;
