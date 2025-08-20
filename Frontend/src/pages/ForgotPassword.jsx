@@ -48,7 +48,7 @@ const ForgotPassword = () => {
         });
 
         setTimeout(() => {
-          navigate('https://civicconnect-nfew.onrender.com');
+          navigate('/');
         }, 3000);
       } else {
         alert(response.data.message || 'Failed to send reset link');
@@ -183,7 +183,7 @@ const ForgotPassword = () => {
         </form>
         
         <button 
-          onClick={() => navigate('https://civicconnect-nfew.onrender.com')} 
+          onClick={() => navigate('/')} 
           style={styles.backButton}
         >
           Back to Login
