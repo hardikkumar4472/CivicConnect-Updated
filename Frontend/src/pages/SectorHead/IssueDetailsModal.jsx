@@ -41,7 +41,7 @@ const IssueDetailsModal = ({
         
         setLoadingCitizenDetails(true);
         const response = await axios.get(
-          `http://localhost:5000/api/sector-head/sector-citizens`,
+          `https://civicconnect-backend.onrender.com/sector-head/sector-citizens`,
           { 
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -91,7 +91,7 @@ const IssueDetailsModal = ({
 
     // Make API call to update status
     const response = await axios.put(
-      `http://localhost:5000/api/issues/${selectedIssue._id}/status`,
+      `https://civicconnect-backend.onrender.com/api/issues/${selectedIssue._id}/status`,
       { status: newStatus },
       {
         headers: {
@@ -137,7 +137,7 @@ const IssueDetailsModal = ({
       const token = localStorage.getItem("token");
       
       const response = await axios.post(
-        `http://localhost:5000/api/issues/${selectedIssue._id}/comment`,
+        `https://civicconnect-backend.onrender.com/api/issues/${selectedIssue._id}/comment`,
         { text: comment },
         {
           headers: {
