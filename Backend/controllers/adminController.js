@@ -42,7 +42,7 @@ export const sendBroadcastEmail = async (req, res) => {
 
     <!-- CTA Button (if needed) -->
     <div style="text-align: center; margin: 30px 0;">
-      <a href="http://localhost:5173/" style="background: linear-gradient(to right, #4d9de0, #6bb9f0); color: white; padding: 14px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px; transition: all 0.3s; box-shadow: 0 2px 10px rgba(77,157,224,0.3);">
+      <a href="https://civicconnect-nfew.onrender.com" style="background: linear-gradient(to right, #4d9de0, #6bb9f0); color: white; padding: 14px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; font-size: 16px; transition: all 0.3s; box-shadow: 0 2px 10px rgba(77,157,224,0.3);">
         Visit CivicConnect
       </a>
     </div>
