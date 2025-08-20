@@ -61,7 +61,7 @@ export const registerSectorHead = async (req, res) => {
     </p>
     
     <div style="text-align: center; margin-top: 30px;">
-      <a href="http://localhost:5173/" style="background: #ff6b35; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Access Dashboard</a>
+      <a href="https://civicconnect-nfew.onrender.com" style="background: #ff6b35; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Access Dashboard</a>
     </div>
   </div>
 
@@ -149,7 +149,7 @@ export const forgotPasswordSectorHead = async (req, res) => {
       }
     });
 
-    const resetLink = `http://localhost:5173/sector-head/reset-password/${token}`; // adjust frontend link
+    const resetLink = `https://civicconnect-nfew.onrender.com/sector-head/reset-password/${token}`; // adjust frontend link
 
     const message = `
 <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; background: #000; color: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
