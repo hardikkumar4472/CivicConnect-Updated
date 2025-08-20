@@ -57,7 +57,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
         const token = localStorage.getItem('token');
         console.log('Fetching citizen data with token:', token ? 'Present' : 'Missing');
         
-        const response = await axios.get('http://localhost:5000/api/citizen/me', {
+        const response = await axios.get('https://civicconnect-backend.onrender.com/api/citizen/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
