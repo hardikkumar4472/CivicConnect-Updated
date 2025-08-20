@@ -16,14 +16,14 @@ const SectorHeadHeader = ({ sectorName, onShowDashboard }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("https://civicconnect-nfew.onrender.com");
   };
 
   const fetchAnalytics = async () => {
     setLoadingAnalytics(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/sector-head/analytics", {
+      const response = await fetch("/api/sector-head/analytics", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();
@@ -96,7 +96,7 @@ const SectorHeadHeader = ({ sectorName, onShowDashboard }) => {
             Analytics
           </button>
           <button 
-            onClick={() => navigate("/send-broadcast")}
+            onClick={() => navigate("https://civicconnect-nfew.onrender.com/send-broadcast")}
             style={{
               padding: '10px 20px',
               backgroundColor: '#1e2a47',
