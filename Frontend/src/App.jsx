@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }) => {
   return token ? children : <Navigate to="/" />;
 };
 const CitizenPrivateRoute = ({ children }) => {
-  const token = localStorage.getItem("citizenToken"); // Assuming you use 'citizenToken' for citizens
+  const token = localStorage.getItem("citizenToken"); 
   return token ? children : <Navigate to="/" />;
 };
 
