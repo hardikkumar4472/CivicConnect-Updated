@@ -283,7 +283,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Sidebar */}
+      {}
       <div style={{
         width: '250px',
         height: '100vh',
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
           marginBottom: '20px',
         }}>
           <img
-            src="https://i.ibb.co/WWMvn2mY/civic-connect-header.jpg"
+            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png"
             alt="CivicConnect Logo"
             style={{
               width: '60px',
@@ -544,7 +544,7 @@ export default function AdminDashboard() {
               }}></i> Dashboard Summary
             </h2>
 
-            {/* Summary Cards */}
+            {}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
@@ -585,14 +585,14 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {/* Charts Section */}
+            {}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               gap: '15px',
               marginTop: '20px'
             }}>
-              {/* Pie Chart */}
+              {}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 
@@ -613,11 +613,11 @@ export default function AdminDashboard() {
                           dashboardData.closedIssues || 0
                         ],
                         backgroundColor: [
-                          '#feca57', // Pending - yellow
-                          '#2e86de', // In Progress - blue
-                          '#1dd1a1', // Resolved - teal
-                          '#ff6b6b', // Escalated - red
-                          '#576574'  // Closed - gray
+                          '#feca57', 
+                          '#2e86de', 
+                          '#1dd1a1', 
+                          '#ff6b6b', 
+                          '#576574'  
                         ]
                       }
                     ]
@@ -625,7 +625,7 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              {/* Bar Chart */}
+              {}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 
@@ -654,7 +654,7 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              {/* Recent Issues Table */}
+              {}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 
