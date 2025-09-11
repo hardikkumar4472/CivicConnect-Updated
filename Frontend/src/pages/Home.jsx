@@ -114,7 +114,7 @@ function Home() {
         {/* Header section */}
         <header style={styles.header}>
           <img
-            src="https://i.ibb.co/WWMvn2mY/civic-connect-header.jpg"
+            src="https://imgbox.com/F2FTK2fb"
             alt="CivicConnect Logo"
             style={styles.headerLogo}
           />
