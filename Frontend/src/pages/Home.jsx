@@ -92,7 +92,7 @@ function Home() {
       <div style={styles.loadingScreen}>
         <div style={styles.loadingContent}>
           <img 
-            src="https://imgbox.com/F2FTK2fb" 
+            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png" 
             alt="CivicConnect Logo" 
             style={styles.loadingLogo}
           />
@@ -114,7 +114,7 @@ function Home() {
         {/* Header section */}
         <header style={styles.header}>
           <img
-            src="https://imgbox.com/F2FTK2fb"
+            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png"
             alt="CivicConnect Logo"
             style={styles.headerLogo}
           />
