@@ -156,7 +156,7 @@ const BroadcastPage = () => {
         )}
       </div>
 
-      {/* Inline CSS for full page styling */}
+      {}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
