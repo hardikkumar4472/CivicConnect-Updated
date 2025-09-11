@@ -1,49 +1,3 @@
-// // import React from "react";
-// // import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-// // import HomePage from "./pages/Home";
-// // import AdminDashboard from "./pages/AdminDashboard";
-// // import SectorHeadDashboard from "./pages/SectorDashboard";
-// // // import AdminLogin from "./pages/AdminLogin";
-// // // import SectorHeadLogin from "./pages/SectorHeadLogin";
-
-// // const AdminPrivateRoute = ({ children }) => {
-// //   const token = localStorage.getItem("adminToken");
-// //   return token ? children : <Navigate to="/admin-dashboard" />;
-// // };
-
-// // const SectorHeadPrivateRoute = ({ children }) => {
-// //   const token = localStorage.getItem("sectorHeadToken");
-// //   return token ? children : <Navigate to="/sector-head-login" />;
-// // };
-
-// // export default function App() {
-// //   return (
-// //     <div style={{ minHeight: "100vh", backgroundColor: "#f0f2f5" }}>
-// //       <Router>
-// //         <Routes>
-// //           <Route path="/" element={<HomePage />} />
-// //           <Route
-// //             path="/admin-dashboard"
-// //             element={
-// //               <AdminPrivateRoute>
-// //                 <AdminDashboard />
-// //               </AdminPrivateRoute>
-// //             }
-// //           />
-// //           <Route
-// //             path="/sector-dashboard"
-// //             element={
-// //               <SectorHeadPrivateRoute>
-// //                 <SectorHeadDashboard />
-// //               </SectorHeadPrivateRoute>
-// //             }
-// //           />
-// //           <Route path="*" element={<Navigate to="/" />} />
-// //         </Routes>
-// //       </Router>
-// //     </div>
-// //   );
-// // }
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
@@ -51,7 +5,6 @@ import HomePage from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import SectorHeadHome from "./pages/SectorHead/Sector-Home";
 import BroadcastPage from "./pages/SectorHead/BroadcastPage";
-// import CitizenDashboard from "./pages/CitizenDashboard/CitizenDashboard";
 import CitizenDashboard from "./pages/citizenDashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
