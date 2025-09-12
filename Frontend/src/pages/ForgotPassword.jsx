@@ -214,11 +214,7 @@ const ForgotPassword = () => {
     
     // Cleanup function to reset styles when component unmounts
     return () => {
-      document.body.style.margin = '';
-      document.body.style.padding = '';
-      document.body.style.width = '';
-      document.body.style.overflowX = '';
-      document.body.style.backgroundColor = '';
+      document.body.style = '';
     };
   }, []);
 
@@ -274,22 +270,21 @@ const ForgotPassword = () => {
     }
   };
 
-  // Inline styles with media queries
   const styles = {
     container: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
-      width: '100vw',
+      width: '100%',
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
       padding: '20px',
       boxSizing: 'border-box',
     },
     card: {
       backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      borderRadius: '40px',
-      padding: '60px',
+      borderRadius: '20px',
+      padding: 'clamp(30px, 5vw, 60px)',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
       backdropFilter: 'blur(50px)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -297,37 +292,17 @@ const ForgotPassword = () => {
       maxWidth: '450px',
       textAlign: 'center',
       boxSizing: 'border-box',
-      // Responsive adjustments
-      '@media (max-width: 768px)': {
-        padding: '40px 30px',
-        borderRadius: '30px',
-      },
-      '@media (max-width: 480px)': {
-        padding: '30px 20px',
-        borderRadius: '20px',
-      },
     },
     title: {
       color: '#fff',
-      fontSize: '1.8rem',
+      fontSize: 'clamp(1.5rem, 4vw, 1.8rem)',
       marginBottom: '10px',
-      // Responsive adjustments
-      '@media (max-width: 768px)': {
-        fontSize: '1.6rem',
-      },
-      '@media (max-width: 480px)': {
-        fontSize: '1.4rem',
-      },
     },
     subtitle: {
       color: 'rgba(255, 255, 255, 0.7)',
-      fontSize: '0.9rem',
+      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
       marginBottom: '30px',
-      // Responsive adjustments
-      '@media (max-width: 480px)': {
-        fontSize: '0.85rem',
-        marginBottom: '20px',
-      },
+      lineHeight: '1.4',
     },
     form: {
       display: 'flex',
@@ -341,38 +316,25 @@ const ForgotPassword = () => {
       display: 'block',
       marginBottom: '8px',
       color: 'rgba(255, 255, 255, 0.8)',
-      fontSize: '0.9rem',
-      // Responsive adjustments
-      '@media (max-width: 480px)': {
-        fontSize: '0.85rem',
-      },
+      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
     },
     input: {
-      width: '92%',
+      width: '100%',
       padding: '12px 15px',
       background: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '350px',
+      borderRadius: '30px',
       color: 'white',
-      fontSize: '0.9rem',
+      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
       boxSizing: 'border-box',
-      // Responsive adjustments
-      '@media (max-width: 768px)': {
-        width: '90%',
-      },
-      '@media (max-width: 480px)': {
-        width: '88%',
-        padding: '10px 12px',
-        fontSize: '0.85rem',
-      },
     },
     button: {
       padding: '12px',
       background: 'linear-gradient(135deg, #ffc550ff, #2563eb)',
       border: 'none',
-      borderRadius: '560px',
+      borderRadius: '30px',
       color: 'white',
-      fontSize: '0.9rem',
+      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
       fontWeight: '600',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -380,20 +342,9 @@ const ForgotPassword = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      maxWidth: '200px',
       width: '100%',
-      marginLeft: '127px',
-      // Responsive adjustments
-      '@media (max-width: 768px)': {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        maxWidth: '180px',
-      },
-      '@media (max-width: 480px)': {
-        maxWidth: '160px',
-        padding: '10px',
-        fontSize: '0.85rem',
-      },
+      maxWidth: '200px',
+      margin: '0 auto',
     },
     backButton: {
       background: 'transparent',
@@ -401,68 +352,43 @@ const ForgotPassword = () => {
       color: '#3b82f6',
       cursor: 'pointer',
       marginTop: '20px',
-      fontSize: '0.9rem',
+      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      marginLeft: '175px',
-      // Responsive adjustments
-      '@media (max-width: 768px)': {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-      },
-      '@media (max-width: 480px)': {
-        fontSize: '0.85rem',
-      },
+      margin: '0 auto',
     },
   };
 
-  // Function to apply responsive styles
-  const getResponsiveStyle = (baseStyle) => {
-    const responsiveStyle = { ...baseStyle };
-    
-    // Apply media queries if they exist
-    if (baseStyle['@media (max-width: 768px)']) {
-      if (window.matchMedia('(max-width: 768px)').matches) {
-        Object.assign(responsiveStyle, baseStyle['@media (max-width: 768px)']);
-      }
-    }
-    
-    if (baseStyle['@media (max-width: 480px)']) {
-      if (window.matchMedia('(max-width: 480px)').matches) {
-        Object.assign(responsiveStyle, baseStyle['@media (max-width: 480px)']);
-      }
-    }
-    
-    // Remove media query properties from the final style object
-    delete responsiveStyle['@media (max-width: 768px)'];
-    delete responsiveStyle['@media (max-width: 480px)'];
-    
-    return responsiveStyle;
-  };
+  // Media query for very small devices
+  const isSmallDevice = window.innerWidth < 400;
+  if (isSmallDevice) {
+    styles.card.padding = '20px';
+    styles.button.maxWidth = '100%';
+  }
 
   return (
-    <div style={getResponsiveStyle(styles.container)}>
-      <div style={getResponsiveStyle(styles.card)}>
-        <h2 style={getResponsiveStyle(styles.title)}>Forgot Password</h2>
-        <p style={getResponsiveStyle(styles.subtitle)}>Enter your email to receive a password reset link</p>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Forgot Password</h2>
+        <p style={styles.subtitle}>Enter your email to receive a password reset link</p>
         
-        <form onSubmit={handleSubmit} style={getResponsiveStyle(styles.form)}>
-          <div style={getResponsiveStyle(styles.inputGroup)}>
-            <label style={getResponsiveStyle(styles.label)}>Email Address</label>
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your registered email"
-              style={getResponsiveStyle(styles.input)}
+              style={styles.input}
               required
             />
           </div>
           
           <button 
             type="submit" 
-            style={getResponsiveStyle(styles.button)} 
+            style={styles.button} 
             disabled={isLoading}
           >
             {isLoading ? 'Sending...' : 'Send Reset Link'}
@@ -471,7 +397,7 @@ const ForgotPassword = () => {
         
         <button 
           onClick={() => navigate('/')} 
-          style={getResponsiveStyle(styles.backButton)}
+          style={styles.backButton}
         >
           Back to Login
         </button>
