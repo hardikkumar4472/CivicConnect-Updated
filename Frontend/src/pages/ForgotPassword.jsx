@@ -274,8 +274,8 @@ const ForgotPassword = () => {
     }
   };
 
-  const styles = {
-    container: {
+  return (
+    <div style={{
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -284,113 +284,87 @@ const ForgotPassword = () => {
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
       padding: '20px',
       boxSizing: 'border-box',
-    },
-    card: {
-      backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      borderRadius: '20px',
-      padding: '40px 30px',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-      backdropFilter: 'blur(50px)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      width: '100%',
-      maxWidth: '450px',
-      textAlign: 'center',
-      boxSizing: 'border-box',
-    },
-    title: {
-      color: '#fff',
-      fontSize: '1.8rem',
-      marginBottom: '10px',
-      fontWeight: '600',
-    },
-    subtitle: {
-      color: 'rgba(255, 255, 255, 0.7)',
-      fontSize: '0.9rem',
-      marginBottom: '30px',
-      lineHeight: '1.4',
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px',
-      width: '100%',
-    },
-    inputGroup: {
-      textAlign: 'left',
-      width: '100%',
-    },
-    label: {
-      display: 'block',
-      marginBottom: '8px',
-      color: 'rgba(255, 255, 255, 0.8)',
-      fontSize: '0.9rem',
-      fontWeight: '500',
-    },
-    input: {
-      width: '100%',
-      padding: '12px 15px',
-      background: 'rgba(255, 255, 255, 0.05)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '8px',
-      color: 'white',
-      fontSize: '0.9rem',
-      boxSizing: 'border-box',
-    },
-    button: {
-      padding: '12px',
-      background: 'linear-gradient(135deg, #ffc550ff, #2563eb)',
-      border: 'none',
-      borderRadius: '8px',
-      color: 'white',
-      fontSize: '0.9rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      marginTop: '10px',
-      width: '100%',
-      maxWidth: '200px',
-      alignSelf: 'center',
-    },
-    backButton: {
-      background: 'transparent',
-      border: 'none',
-      color: '#3b82f6',
-      cursor: 'pointer',
-      marginTop: '20px',
-      fontSize: '0.9rem',
-      textDecoration: 'underline',
-      alignSelf: 'center',
-    },
-  };
-
-  // Media queries for responsiveness
-  const mediaQueries = {
-    small: '@media (max-width: 480px)',
-    medium: '@media (min-width: 481px) and (max-width: 768px)',
-  };
-
-  return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Forgot Password</h2>
-        <p style={styles.subtitle}>Enter your email to receive a password reset link</p>
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        borderRadius: '20px',
+        padding: '40px 30px',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(50px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        width: '100%',
+        maxWidth: '450px',
+        textAlign: 'center',
+        boxSizing: 'border-box',
+      }} className="forgot-password-card">
+        <h2 style={{
+          color: '#fff',
+          fontSize: '1.8rem',
+          marginBottom: '10px',
+          fontWeight: '600',
+        }} className="forgot-password-title">Forgot Password</h2>
+        <p style={{
+          color: 'rgba(255, 255, 255, 0.7)',
+          fontSize: '0.9rem',
+          marginBottom: '30px',
+          lineHeight: '1.4',
+        }}>Enter your email to receive a password reset link</p>
         
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>Email Address</label>
+        <form onSubmit={handleSubmit} style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+        }}>
+          <div style={{
+            textAlign: 'left',
+            width: '100%',
+          }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+            }}>Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your registered email"
-              style={styles.input}
+              style={{
+                width: '100%',
+                padding: '12px 15px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                color: 'white',
+                fontSize: '0.9rem',
+                boxSizing: 'border-box',
+              }}
               required
             />
           </div>
           
           <button 
             type="submit" 
-            style={styles.button} 
+            style={{
+              padding: '12px',
+              background: 'linear-gradient(135deg, #ffc550ff, #2563eb)',
+              border: 'none',
+              borderRadius: '8px',
+              color: 'white',
+              fontSize: '0.9rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              marginTop: '10px',
+              width: '100%',
+              maxWidth: '200px',
+              alignSelf: 'center',
+            }}
+            className="forgot-password-button"
             disabled={isLoading}
           >
             {isLoading ? 'Sending...' : 'Send Reset Link'}
@@ -399,7 +373,16 @@ const ForgotPassword = () => {
         
         <button 
           onClick={() => navigate('/')} 
-          style={styles.backButton}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#3b82f6',
+            cursor: 'pointer',
+            marginTop: '20px',
+            fontSize: '0.9rem',
+            textDecoration: 'underline',
+            alignSelf: 'center',
+          }}
         >
           Back to Login
         </button>
@@ -408,7 +391,7 @@ const ForgotPassword = () => {
       {/* Inline styles for media queries */}
       <style>
         {`
-          ${mediaQueries.small} {
+          @media (max-width: 480px) {
             .forgot-password-card {
               padding: 30px 20px !important;
               border-radius: 16px !important;
@@ -420,7 +403,7 @@ const ForgotPassword = () => {
               max-width: 100% !important;
             }
           }
-          ${mediaQueries.medium} {
+          @media (min-width: 481px) and (max-width: 768px) {
             .forgot-password-card {
               padding: 40px 30px !important;
             }
