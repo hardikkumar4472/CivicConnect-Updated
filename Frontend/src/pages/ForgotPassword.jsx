@@ -212,9 +212,12 @@ const ForgotPassword = () => {
     document.body.style.overflowX = 'hidden';
     document.body.style.backgroundColor = '#0f172a';
     
-    // Cleanup function to reset styles when component unmounts
     return () => {
-      document.body.style = '';
+      document.body.style.margin = '';
+      document.body.style.padding = '';
+      document.body.style.width = '';
+      document.body.style.overflowX = '';
+      document.body.style.backgroundColor = '';
     };
   }, []);
 
@@ -278,31 +281,32 @@ const ForgotPassword = () => {
       minHeight: '100vh',
       width: '100%',
       background: 'linear-gradient(135deg, #0f172a, #1e293b)',
-      padding: '20px',
+      padding: '0',
+      margin: '0',
       boxSizing: 'border-box',
     },
     card: {
       backgroundColor: 'rgba(15, 23, 42, 0.9)',
-      borderRadius: '20px',
-      padding: 'clamp(30px, 5vw, 60px)',
+      borderRadius: '40px',
+      padding: '60px',
       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
       backdropFilter: 'blur(50px)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
       width: '100%',
       maxWidth: '450px',
       textAlign: 'center',
+      margin: '20px',
       boxSizing: 'border-box',
     },
     title: {
       color: '#fff',
-      fontSize: 'clamp(1.5rem, 4vw, 1.8rem)',
+      fontSize: '1.8rem',
       marginBottom: '10px',
     },
     subtitle: {
       color: 'rgba(255, 255, 255, 0.7)',
-      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
+      fontSize: '0.9rem',
       marginBottom: '30px',
-      lineHeight: '1.4',
     },
     form: {
       display: 'flex',
@@ -316,25 +320,25 @@ const ForgotPassword = () => {
       display: 'block',
       marginBottom: '8px',
       color: 'rgba(255, 255, 255, 0.8)',
-      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
+      fontSize: '0.9rem',
     },
     input: {
       width: '100%',
       padding: '12px 15px',
       background: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '30px',
+      borderRadius: '350px',
       color: 'white',
-      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
+      fontSize: '0.9rem',
       boxSizing: 'border-box',
     },
     button: {
       padding: '12px',
       background: 'linear-gradient(135deg, #ffc550ff, #2563eb)',
       border: 'none',
-      borderRadius: '30px',
+      borderRadius: '560px',
       color: 'white',
-      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
+      fontSize: '0.9rem',
       fontWeight: '600',
       cursor: 'pointer',
       transition: 'all 0.3s ease',
@@ -344,7 +348,7 @@ const ForgotPassword = () => {
       justifyContent: 'center',
       width: '100%',
       maxWidth: '200px',
-      margin: '0 auto',
+      margin: '10px auto',
     },
     backButton: {
       background: 'transparent',
@@ -352,19 +356,32 @@ const ForgotPassword = () => {
       color: '#3b82f6',
       cursor: 'pointer',
       marginTop: '20px',
-      fontSize: 'clamp(0.8rem, 3vw, 0.9rem)',
+      fontSize: '0.9rem',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      width: '100%',
       margin: '0 auto',
     },
   };
 
-  // Media query for very small devices
-  const isSmallDevice = window.innerWidth < 400;
-  if (isSmallDevice) {
-    styles.card.padding = '20px';
-    styles.button.maxWidth = '100%';
+  // Media query adjustments
+  const isMobile = window.innerWidth <= 768;
+  
+  if (isMobile) {
+    // Mobile-specific adjustments
+    styles.card.padding = '40px 20px';
+    styles.card.margin = '15px';
+    styles.card.borderRadius = '30px';
+    styles.title.fontSize = '1.5rem';
+    styles.subtitle.fontSize = '0.85rem';
+    styles.subtitle.marginBottom = '25px';
+    styles.input.padding = '10px 15px';
+    styles.input.fontSize = '0.85rem';
+    styles.button.padding = '10px';
+    styles.button.fontSize = '0.85rem';
+    styles.button.maxWidth = '180px';
+    styles.backButton.fontSize = '0.85rem';
   }
 
   return (
