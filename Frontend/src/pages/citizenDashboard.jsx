@@ -14,7 +14,7 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/request/my-requests", {
+        const res = await axios.get("https://civicconnect-backend.onrender.com/api/request/my-requests", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRequests(res.data);
@@ -545,7 +545,7 @@ export default function CitizenDashboard() {
     if (closedIssues.length > 0) {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/feedback/batch",
+          "https://civicconnect-backend.onrender.com/api/feedback/batch",
           {
             headers: { Authorization: `Bearer ${token}` },
             params: {
@@ -579,10 +579,10 @@ export default function CitizenDashboard() {
       }
 
       const [citizenRes, issuesRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/citizen/me", {
+        axios.get("https://civicconnect-backend.onrender.com/api/citizen/me", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:5000/api/issues/my", {
+        axios.get("https://civicconnect-backend.onrender.com/api/issues/my", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -634,7 +634,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/issues/report",
+        "https://civicconnect-backend.onrender.com/api/issues/report",
         newIssueData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -651,14 +651,14 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/request/create",
+        "https://civicconnect-backend.onrender.com/api/request/create",
         requestData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
       // Refresh the requests list
       const token2 = localStorage.getItem("token");
-      const requestsRes = await axios.get("http://localhost:5000/api/request/my-requests", {
+      const requestsRes = await axios.get("https://civicconnect-backend.onrender.com/api/request/my-requests", {
         headers: { Authorization: `Bearer ${token2}` }
       });
       
@@ -676,7 +676,7 @@ export default function CitizenDashboard() {
       setExporting(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/issues/export-issues",
+        "https://civicconnect-backend.onrender.com/api/issues/export-issues",
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob"
@@ -715,7 +715,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/feedback/submit",
+        "https://civicconnect-backend.onrender.com/api/feedback/submit",
         { issueId, rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
