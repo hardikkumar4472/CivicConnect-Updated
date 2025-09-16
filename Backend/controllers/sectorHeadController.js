@@ -6,6 +6,7 @@ import generateToken from '../utils/generateToken.js';
 import Issue from '../models/issue.js';
 import Citizen from '../models/Citizen.js';
 import Feedback from '../models/Feedback.js';
+import Request from '../models/Request.js';
 export const registerSectorHead = async (req, res) => {
   try {
     const { name, sector, email } = req.body;
@@ -715,3 +716,82 @@ export const getSectorWiseRatings = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch ratings" });
   }
 };
+export const getSectorGatheringRequests = async (req, res) => {
+  try {
+    // 1. Get current sector head
+    const sectorHead = await SectorHead.findById(req.user.id);
+    if (!sectorHead) {
+      return res.status(404).json({ message: "Sector Head not found" });
+    }
+
+    const sector = sectorHead.sector;
+
+    // 2. Fetch all gathering requests for this sector
+    const requests = await Request.find({ sector })
+      .populate("citizen", "name email houseId") // include citizen info
+      .sort({ createdAt: -1 }); // latest first
+
+    // 3. Handle empty case
+    if (!requests || requests.length === 0) {
+      return res.status(200).json({
+        sector,
+        requests: [],
+        message: "No gathering requests found for this sector",
+      });
+    }
+
+    res.status(200).json({
+      sector,
+      totalRequests: requests.length,
+      requests,
+    });
+  } catch (error) {
+    console.error("Error fetching sector gathering requests:", error);
+    res.status(500).json({ message: "Failed to fetch gathering requests" });
+  }
+};
+export const updateRequestStatus = async (req, res) => {
+  try {
+    const requestId = req.params.id;   // ✅ FIXED
+    const { status, remarks } = req.body;
+
+    if (!["approved", "rejected"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    // find request
+    const request = await Request.findById(requestId);
+    if (!request) {
+      return res.status(404).json({ message: "Request not found" });
+    }
+
+    // check sector head
+    const sectorHead = await SectorHead.findById(req.user.id);
+    if (!sectorHead) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    // compare sectors safely
+    if (
+      request.sector.toString().trim().toLowerCase() !==
+      sectorHead.sector.toString().trim().toLowerCase()
+    ) {
+      return res.status(403).json({ message: "Not authorized for this sector" });
+    }
+
+    // update
+    request.status = status;
+    if (remarks) request.remarks = remarks;
+    await request.save();
+
+    res.status(200).json({
+      message: `Request ${status} successfully`,
+      request,
+    });
+  } catch (error) {
+    console.error("Update Gathering Status Error:", error.message);
+    console.error("Stack:", error.stack);
+    res.status(500).json({ message: "Failed to update request status", error: error.message });
+  }
+};
+
