@@ -7,7 +7,188 @@ import IssueCard from "./IssueCard";
 import DashboardSummaryModal from "./DashboardSummaryModal";
 import IssueDetailsModal from "./IssueDetailsModal";
 import CreateCitizen from "./CreateCitizen";
-import BroadcastPage from "./BroadcastPage";
+
+// Sector Requests Component
+function SectorRequests() {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchRequests = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:5000/api/sector-head/gathering-request", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRequests(res.data.requests || []);
+    } catch (err) {
+      console.error("Error fetching sector requests:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const handleAction = async (id, status) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/sector-head/gathering/${id}/status`,
+        { status, remarks: status === "approved" ? "Approved ✅" : "Rejected ❌" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchRequests();
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
+  };
+
+  if (loading) return <p className="loading">Loading...</p>;
+
+  return (
+    <div className="container">
+      <h2 className="title">Sector Gathering Requests</h2>
+      {requests.length === 0 ? (
+        <p className="empty">No requests found for your sector.</p>
+      ) : (
+        requests.map((req) => (
+          <div key={req._id} className="card">
+            <div className="card-header">
+              <h3 className="card-title">{req.gatheringName}</h3>
+              <span
+                className={`badge ${
+                  req.status === "approved"
+                    ? "success"
+                    : req.status === "rejected"
+                    ? "danger"
+                    : "pending"
+                }`}
+              >
+                {req.status}
+              </span>
+            </div>
+            <p className="text">👤 {req.citizen?.name} ({req.citizen?.houseId})</p>
+            <p className="text">📍 {req.location}</p>
+            <p className="text">👥 {req.expectedPeople} people</p>
+            <p className="text">📅 {new Date(req.date).toLocaleDateString()}</p>
+            {req.remarks && <p className="remarks">Status: {req.remarks}</p>}
+
+            {req.status === "pending" && (
+              <div className="button-group">
+                <button
+                  onClick={() => handleAction(req._id, "approved")}
+                  className="btn approve"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleAction(req._id, "rejected")}
+                  className="btn reject"
+                >
+                  Reject
+                </button>
+              </div>
+            )}
+          </div>
+        ))
+      )}
+
+      <style>{`
+        .container {
+          padding: 16px;
+        }
+        .title {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 16px;
+          color: #ccd6f6;
+        }
+        .empty {
+          color: #8892b0;
+          text-align: center;
+        }
+        .card {
+          background: #112240;
+          padding: 16px;
+          margin-bottom: 12px;
+          border-radius: 10px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          border: 1px solid #233554;
+        }
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+        .card-title {
+          font-weight: bold;
+          color: #ccd6f6;
+        }
+        .text {
+          font-size: 14px;
+          margin: 4px 0;
+          color: #8892b0;
+        }
+        .remarks {
+          font-size: 14px;
+          margin-top: 6px;
+          color: #a8b2d1;
+          font-style: italic;
+        }
+        .badge {
+          padding: 4px 8px;
+          border-radius: 6px;
+          font-size: 12px;
+          text-transform: capitalize;
+        }
+        .badge.success {
+          background: #d1fae5;
+          color: #065f46;
+        }
+        .badge.danger {
+          background: #fee2e2;
+          color: #991b1b;
+        }
+        .badge.pending {
+          background: #fef3c7;
+          color: #92400e;
+        }
+        .button-group {
+          margin-top: 10px;
+          display: flex;
+          gap: 10px;
+        }
+        .btn {
+          padding: 6px 12px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          color: white;
+          font-size: 14px;
+        }
+        .btn.approve {
+          background-color: #16a34a;
+        }
+        .btn.approve:hover {
+          background-color: #15803d;
+        }
+        .btn.reject {
+          background-color: #dc2626;
+        }
+        .btn.reject:hover {
+          background-color: #b91c1c;
+        }
+        .loading {
+          text-align: center;
+          color: #8892b0;
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function SectorHeadDashboard() {
   const [issues, setIssues] = useState([]);
@@ -41,6 +222,7 @@ export default function SectorHeadDashboard() {
   const [showCreateCitizen, setShowCreateCitizen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showRequests, setShowRequests] = useState(false);
   const navigate = useNavigate();
 
   // Status options for filtering
@@ -64,13 +246,13 @@ export default function SectorHeadDashboard() {
         }
         
         const [sectorRes, issuesRes, summaryRes] = await Promise.all([
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/me", {
+          axios.get("http://localhost:5000/api/sector-head/me", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/issues", {
+          axios.get("http://localhost:5000/api/sector-head/issues", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/dashboard-summary", {
+          axios.get("http://localhost:5000/api/sector-head/dashboard-summary", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
@@ -113,7 +295,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://civicconnect-backend.onrender.com/api/sector-head/analytics",
+        "http://localhost:5000/api/sector-head/analytics",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalytics(response.data);
@@ -134,7 +316,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://civicconnect-backend.onrender.com/api/sector-head/citizen/${issue.raisedBy}`,
+        `http://localhost:5000/api/sector-head/citizen/${issue.raisedBy}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -164,7 +346,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://civicconnect-backend.onrender.com/api/issues/${issueId}/status`,
+        `http://localhost:5000/api/issues/${issueId}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -252,37 +434,17 @@ export default function SectorHeadDashboard() {
             cursor: 'pointer',
             padding: '5px',
             borderRadius: '5px',
-            transition: 'all 0.3s ease',
-            ':hover': {
-              background: '#112240'
-            },
-            '@media (max-width: 768px)': {
-              display: 'block'
-            }
+            transition: 'all 0.3s ease'
           }}
         >
           <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
         
-        {/* Main Navigation (hidden on mobile when menu is closed) */}
+        {/* Main Navigation */}
         <div style={{
           display: 'flex',
           gap: '15px',
-          alignItems: 'center',
-          '@media (max-width: 768px)': {
-            display: isMenuOpen ? 'flex' : 'none',
-            position: 'absolute',
-            top: '100%',
-            right: '20px',
-            backgroundColor: '#0a192f',
-            padding: '15px',
-            borderRadius: '8px',
-            boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            border: '1px solid #233554',
-            zIndex: 1000
-          }
+          alignItems: 'center'
         }}>
           <button 
             onClick={() => setShowCreateCitizen(true)}
@@ -298,14 +460,7 @@ export default function SectorHeadDashboard() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)',
-              ':hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 15px rgba(100, 255, 218, 0.5)'
-              },
-              ':active': {
-                transform: 'translateY(0)'
-              }
+              boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)'
             }}
           >
             <i className="fas fa-user-plus"></i>
@@ -325,15 +480,7 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              ':hover': {
-                backgroundColor: '#1a2e4a',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
-              },
-              ':active': {
-                transform: 'translateY(0)'
-              }
+              gap: '8px'
             }}
           >
             <i className="fas fa-bullhorn"></i>
@@ -353,19 +500,33 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              ':hover': {
-                backgroundColor: '#1a2e4a',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
-              },
-              ':active': {
-                transform: 'translateY(0)'
-              }
+              gap: '8px'
             }}
           >
             <i className="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
+          </button>
+
+          <button 
+            onClick={() => {
+              setShowRequests(true);
+            }}
+            style={{
+              padding: '10px 15px',
+              backgroundColor: '#112240',
+              border: '1px solid #233554',
+              borderRadius: '30px',
+              color: '#ccd6f6',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            <i className="fas fa-calendar-check"></i>
+            <span>Gathering Requests</span>
           </button>
 
           <button 
@@ -386,15 +547,7 @@ export default function SectorHeadDashboard() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              opacity: loadingAnalytics ? 0.7 : 1,
-              ':hover': {
-                backgroundColor: loadingAnalytics ? '#112240' : '#1a2e4a',
-                transform: loadingAnalytics ? 'none' : 'translateY(-2px)',
-                boxShadow: loadingAnalytics ? 'none' : '0 4px 10px rgba(0, 0, 0, 0.2)'
-              },
-              ':active': {
-                transform: 'translateY(0)'
-              }
+              opacity: loadingAnalytics ? 0.7 : 1
             }}
           >
             {loadingAnalytics ? (
@@ -421,15 +574,7 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              ':hover': {
-                backgroundColor: '#1a2e4a',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)'
-              },
-              ':active': {
-                transform: 'translateY(0)'
-              }
+              gap: '8px'
             }}
           >
             <i className="fas fa-sign-out-alt"></i>
@@ -446,149 +591,163 @@ export default function SectorHeadDashboard() {
         boxSizing: 'border-box',
         background: 'linear-gradient(135deg, #0a192f 0%, #0f2746 100%)'
       }}>
-        <div style={{
-          width: '100%',
-          maxWidth: '100%',
-          padding: '0 20px',
-          boxSizing: 'border-box'
-        }}>
+        {!showRequests ? (
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '20px',
-            flexWrap: 'wrap',
-            gap: '15px'
+            width: '100%',
+            maxWidth: '100%',
+            padding: '0 20px',
+            boxSizing: 'border-box'
           }}>
-            <h2 style={{
-              fontSize: '1.8rem',
-              fontWeight: '600',
-              margin: 0,
+            <div style={{
               display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              gap: '10px',
-              color: '#ccd6f6',
-              textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
-              '@media (max-width: 768px)': {
-                fontSize: '1.5rem'
-              }
+              marginBottom: '20px',
+              flexWrap: 'wrap',
+              gap: '15px'
             }}>
-              <i className="fas fa-exclamation-circle" style={{ 
-                color: '#64ffda',
-                animation: 'pulse 2s infinite'
-              }}></i> 
-              Reported Issues in Your Sector
-            </h2>
+              <h2 style={{
+                fontSize: '1.8rem',
+                fontWeight: '600',
+                margin: 0,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                color: '#ccd6f6',
+                textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
+              }}>
+                <i className="fas fa-exclamation-circle" style={{ 
+                  color: '#64ffda'
+                }}></i> 
+                Reported Issues in Your Sector
+              </h2>
+              
+              <div style={{
+                display: 'flex',
+                gap: '10px',
+                flexWrap: 'wrap'
+              }}>
+                {statusFilters.map(filter => (
+                  <button
+                    key={filter.id}
+                    onClick={() => setActiveFilter(filter.id)}
+                    style={{
+                      padding: '8px 15px',
+                      borderRadius: '20px',
+                      border: 'none',
+                      background: activeFilter === filter.id ? 
+                        'linear-gradient(135deg, #64ffda 0%, #52dbb7 100%)' : 
+                        'linear-gradient(135deg, #112240 0%, #1a2e4a 100%)',
+                      color: activeFilter === filter.id ? '#0a192f' : '#ccd6f6',
+                      cursor: 'pointer',
+                      fontWeight: '600',
+                      fontSize: '0.8rem',
+                      transition: 'all 0.3s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      boxShadow: activeFilter === filter.id ? 
+                        '0 4px 15px rgba(100, 255, 218, 0.4)' : 
+                        '0 2px 5px rgba(0, 0, 0, 0.1)'
+                    }}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
+              </div>
+            </div>
             
+            {filteredIssues.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px 20px',
+                color: '#8892b0',
+                backgroundColor: 'rgba(17, 34, 64, 0.7)',
+                borderRadius: '12px',
+                marginTop: '20px',
+                border: '1px dashed #233554',
+                transition: 'all 0.3s ease'
+              }}>
+                <i className="fas fa-check-circle" style={{
+                  fontSize: '3.5rem',
+                  color: '#64ffda',
+                  marginBottom: '15px',
+                  filter: 'drop-shadow(0 0 10px rgba(100, 255, 218, 0.3))'
+                }}></i>
+                <h3 style={{
+                  fontSize: '1.3rem',
+                  marginBottom: '10px',
+                  color: '#ccd6f6'
+                }}>
+                  {activeFilter === "all" 
+                    ? "No issues reported in your sector yet." 
+                    : `No ${statusFilters.find(f => f.id === activeFilter)?.label} issues found.`}
+                </h3>
+                <p style={{ 
+                  fontSize: '1rem',
+                  opacity: 0.8
+                }}>
+                  {activeFilter === "all" 
+                    ? "When citizens report issues, they'll appear here." 
+                    : "Try a different filter or check back later."}
+                </p>
+              </div>
+            ) : (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                gap: '25px',
+                width: '100%'
+              }}>
+                {filteredIssues.map((issue) => (
+                  <IssueCard
+                    key={issue._id}
+                    issue={issue}
+                    isSelected={selectedIssue?._id === issue._id}
+                    onClick={() => handleIssueClick(issue)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>
             <div style={{
               display: 'flex',
-              gap: '10px',
-              flexWrap: 'wrap',
-              '@media (max-width: 768px)': {
-                justifyContent: 'center',
-                width: '100%'
-              }
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '20px'
             }}>
-              {statusFilters.map(filter => (
-                <button
-                  key={filter.id}
-                  onClick={() => setActiveFilter(filter.id)}
-                  style={{
-                    padding: '8px 15px',
-                    borderRadius: '20px',
-                    border: 'none',
-                    background: activeFilter === filter.id ? 
-                      'linear-gradient(135deg, #64ffda 0%, #52dbb7 100%)' : 
-                      'linear-gradient(135deg, #112240 0%, #1a2e4a 100%)',
-                    color: activeFilter === filter.id ? '#0a192f' : '#ccd6f6',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                    fontSize: '0.8rem',
-                    transition: 'all 0.3s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    boxShadow: activeFilter === filter.id ? 
-                      '0 4px 15px rgba(100, 255, 218, 0.4)' : 
-                      '0 2px 5px rgba(0, 0, 0, 0.1)',
-                    ':hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: activeFilter === filter.id ? 
-                        '0 6px 20px rgba(100, 255, 218, 0.6)' : 
-                        '0 4px 10px rgba(0, 0, 0, 0.2)'
-                    },
-                    ':active': {
-                      transform: 'translateY(0)'
-                    }
-                  }}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {filteredIssues.length === 0 ? (
-            <div style={{
-              textAlign: 'center',
-              padding: '40px 20px',
-              color: '#8892b0',
-              backgroundColor: 'rgba(17, 34, 64, 0.7)',
-              borderRadius: '12px',
-              marginTop: '20px',
-              border: '1px dashed #233554',
-              transition: 'all 0.3s ease',
-              ':hover': {
-                backgroundColor: 'rgba(17, 34, 64, 0.9)',
-                transform: 'translateY(-3px)',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)'
-              }
-            }}>
-              <i className="fas fa-check-circle" style={{
-                fontSize: '3.5rem',
-                color: '#64ffda',
-                marginBottom: '15px',
-                filter: 'drop-shadow(0 0 10px rgba(100, 255, 218, 0.3))'
-              }}></i>
-              <h3 style={{
-                fontSize: '1.3rem',
-                marginBottom: '10px',
+              <h2 style={{
+                fontSize: '1.8rem',
+                fontWeight: '600',
+                margin: 0,
                 color: '#ccd6f6'
               }}>
-                {activeFilter === "all" 
-                  ? "No issues reported in your sector yet." 
-                  : `No ${statusFilters.find(f => f.id === activeFilter)?.label} issues found.`}
-              </h3>
-              <p style={{ 
-                fontSize: '1rem',
-                opacity: 0.8
-              }}>
-                {activeFilter === "all" 
-                  ? "When citizens report issues, they'll appear here." 
-                  : "Try a different filter or check back later."}
-              </p>
+                Gathering Requests
+              </h2>
+              <button
+                onClick={() => setShowRequests(false)}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#64ffda',
+                  color: '#0a192f',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <i className="fas fa-arrow-left"></i>
+                Back to Issues
+              </button>
             </div>
-          ) : (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '25px',
-              width: '100%',
-              '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr'
-              }
-            }}>
-              {filteredIssues.map((issue) => (
-                <IssueCard
-                  key={issue._id}
-                  issue={issue}
-                  isSelected={selectedIssue?._id === issue._id}
-                  onClick={() => handleIssueClick(issue)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+            <SectorRequests />
+          </div>
+        )}
       </div>
 
       {showDashboard && (
