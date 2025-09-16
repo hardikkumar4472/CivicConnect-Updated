@@ -1,6 +1,6 @@
 import express from 'express';
 import Admin from '../models/Admin.js';
-import { registerSectorHead, loginSectorHead, forgotPasswordSectorHead, resetPasswordSectorHead, getAllIssuesInSector } from '../controllers/sectorHeadController.js';
+import { registerSectorHead, loginSectorHead, forgotPasswordSectorHead, resetPasswordSectorHead, getAllIssuesInSector, getSectorGatheringRequests, updateRequestStatus } from '../controllers/sectorHeadController.js';
 import { protect } from '../middleware/auth.js';  
 import authSectorHead from '../middleware/authSectorHead.js';
 import { getSectorDashboardSummary } from '../controllers/sectorHeadController.js';
@@ -32,5 +32,7 @@ router.get("/me", authSectorHead, getSectorHeadDetails);
 router.post('/broadcast', authSectorHead, sendBroadcastEmailSectorHead);
 router.get('/sector-citizens', authSectorHead, getCitizensWithIssuesBySector);
 router.get('/average-rating', authSectorHead, getSectorWiseRatings);
+router.get("/gathering-request", authSectorHead, getSectorGatheringRequests);
+router.put("/gathering/:id/status", authSectorHead, updateRequestStatus);
 
 export default router;
