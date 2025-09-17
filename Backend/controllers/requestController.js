@@ -39,7 +39,8 @@ export const getMyRequests = async (req, res) => {
     res.status(200).json(requests);
   } catch (error) {
     console.error("Get My Requests Error:", error.message);
-    res.status(500).json({ message: "Server error while fetching requests" });
+    return res.status(500).json({ message: "Server error while fetching requests" });
   }
 };
+
 
