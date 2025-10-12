@@ -13,11 +13,12 @@ import cors from 'cors';
 dotenv.config();
 connectDB();
 const app = express();
-app.use(express.json());
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://civicconnect-nfew.onrender.com"
 ];
+
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -29,7 +30,7 @@ app.use(cors({
   },
   credentials: true,
 }));
-
+app.use(express.json());
 // app.options("*", cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/sector-head', sectorHeadRoutes);
