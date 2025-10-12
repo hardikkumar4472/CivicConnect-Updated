@@ -38,5 +38,5 @@ app.use('/api/citizen', citizenRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/request', requestRoute);
-// app.use('/api/issues', adminRoutes);
+app.use('/api/issues', adminRoutes);
 export default app;
