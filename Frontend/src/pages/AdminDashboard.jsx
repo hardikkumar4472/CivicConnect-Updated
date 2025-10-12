@@ -94,7 +94,7 @@ export default function AdminDashboard() {
 
   const fetchAdminDetails = async () => {
     try {
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/issues/profile", {
+      const res = await axios.get("http://localhost:5000/api/issues/profile", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAdminName(res.data.name);
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
 
   const fetchDashboard = async () => {
     try {
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/issues/dashboard-summary", {
+      const res = await axios.get("http://localhost:5000/api/issues/dashboard-summary", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDashboardData(res.data);
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
 
   const fetchSectors = async () => {
     try {
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/issues/sectors", {
+      const res = await axios.get("http://localhost:5000/api/issues/sectors", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectors(res.data);
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
 
   const fetchSectorRatings = async () => {
     try {
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/feedback/sector-ratings", {
+      const res = await axios.get("http://localhost:5000/api/feedback/sector-ratings", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectorRatings(res.data);
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
   const sendBroadcast = async () => {
     try {
       await axios.post(
-        "https://civicconnect-backend.onrender.com/api/issues/broadcast", 
+        "http://localhost:5000/api/issues/broadcast", 
         { subject: broadcastSubject, message: broadcastMsg },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
   const createSectorHead = async () => {
     try {
       await axios.post(
-        "https://civicconnect-backend.onrender.com/api/sector-head/register",
+        "http://localhost:5000/api/sector-head/register",
         sectorHeadData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
 
   const downloadCSV = async () => {
     try {
-      const response = await axios.get("https://civicconnect-backend.onrender.com/api/issues/export-issues", {
+      const response = await axios.get("http://localhost:5000/api/issues/export-issues", {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob", 
       });
@@ -283,7 +283,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {}
+      {/* Sidebar */}
       <div style={{
         width: '250px',
         height: '100vh',
@@ -307,7 +307,7 @@ export default function AdminDashboard() {
           marginBottom: '20px',
         }}>
           <img
-            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png"
+            src="https://i.ibb.co/WWMvn2mY/civic-connect-header.jpg"
             alt="CivicConnect Logo"
             style={{
               width: '60px',
@@ -544,7 +544,7 @@ export default function AdminDashboard() {
               }}></i> Dashboard Summary
             </h2>
 
-            {}
+            {/* Summary Cards */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
@@ -585,14 +585,14 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {}
+            {/* Charts Section */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
               gap: '15px',
               marginTop: '20px'
             }}>
-              {}
+              {/* Pie Chart */}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 
@@ -613,11 +613,11 @@ export default function AdminDashboard() {
                           dashboardData.closedIssues || 0
                         ],
                         backgroundColor: [
-                          '#feca57', 
-                          '#2e86de', 
-                          '#1dd1a1', 
-                          '#ff6b6b', 
-                          '#576574'  
+                          '#feca57', // Pending - yellow
+                          '#2e86de', // In Progress - blue
+                          '#1dd1a1', // Resolved - teal
+                          '#ff6b6b', // Escalated - red
+                          '#576574'  // Closed - gray
                         ]
                       }
                     ]
@@ -625,7 +625,7 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              {}
+              {/* Bar Chart */}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 
@@ -654,7 +654,7 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              {}
+              {/* Recent Issues Table */}
               <div style={{ 
                 backgroundColor: '#112240', 
                 padding: '15px', 

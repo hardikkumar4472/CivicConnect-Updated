@@ -14,27 +14,18 @@ dotenv.config();
 connectDB();
 const app = express();
 app.use(express.json());
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://civicconnect-nfew.onrender.com"
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS blocked: " + origin));
-    }
-  },
-  credentials: true,
+  origin: [
+    'http://localhost:5173',                 
+    'https://civicconnect-nfew.onrender.com' 
+  ],
+  credentials: true
 }));
 
-app.options("*", cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/sector-head', sectorHeadRoutes);
 app.use('/api/citizen', citizenRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/feedback', feedbackRoutes);
-// app.use('/api/issues', adminRoutes);
+app.use('/api/issues', adminRoutes);
 export default app;

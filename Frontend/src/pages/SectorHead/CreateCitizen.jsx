@@ -28,7 +28,7 @@ export default function CreateCitizen({ sectorName, onClose }) {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
-        "https://civicconnect-backend.onrender.com/api/citizen/register",
+        "http://localhost:5000/api/citizen/register",
         {
           ...formData,
           sector: sectorName

@@ -10,9 +10,10 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
       try {
         const token = localStorage.getItem("token");
         
+        // Fetch average rating
         setLoadingRating(true);
         const ratingResponse = await fetch(
-          "https://civicconnect-backend.onrender.com/api/sector-head/average-rating",
+          "http://localhost:5000/api/sector-head/average-rating",
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -33,9 +34,10 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
           }));
         }
 
+        // Fetch total issues
         setLoadingTotalIssues(true);
         const analyticsResponse = await fetch(
-          "https://civicconnect-backend.onrender.com/api/sector-head/analytics",
+          "http://localhost:5000/api/sector-head/analytics",
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -63,16 +65,18 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
     fetchAnalyticsData();
   }, []);
 
+  // Function to get color based on rating
   const getRatingColor = (rating) => {
-    if (rating >= 4.5) return '#4CAF50'; 
-    if (rating >= 3.5) return '#8BC34A'; 
-    if (rating >= 2.5) return '#FFEB3B'; 
-    if (rating >= 1.5) return '#FF9800'; 
-    return '#F44336'; 
+    if (rating >= 4.5) return '#4CAF50'; // Green
+    if (rating >= 3.5) return '#8BC34A'; // Light Green
+    if (rating >= 2.5) return '#FFEB3B'; // Yellow
+    if (rating >= 1.5) return '#FF9800'; // Orange
+    return '#F44336'; // Red
   };
 
+  // Function to create pie chart data
   const createPieChartData = (rating) => {
-    const normalizedRating = Math.min(Math.max(rating, 0), 5); 
+    const normalizedRating = Math.min(Math.max(rating, 0), 5); // Ensure rating is between 0-5
     const filledDegrees = (normalizedRating / 5) * 360;
     return {
       filledDegrees,
@@ -95,7 +99,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
         </h2>
         
         <div style={styles.analyticsGrid}>
-          {}
+          {/* Total Issues */}
           <div style={styles.analyticsCard}>
             <div style={styles.cardHeader}>
               <i className="fas fa-exclamation-circle" style={styles.cardIcon}></i>
@@ -110,7 +114,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
             </div>
           </div>
           
-          {}
+          {/* Most Reported Category */}
           <div style={styles.analyticsCard}>
             <div style={styles.cardHeader}>
               <i className="fas fa-star" style={styles.cardIcon}></i>
@@ -125,7 +129,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
             </div>
           </div>
           
-          {}
+          {/* Average Resolution Time */}
           <div style={styles.analyticsCard}>
             <div style={styles.cardHeader}>
               <i className="fas fa-clock" style={styles.cardIcon}></i>
@@ -134,7 +138,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
             <div style={styles.cardValue}>5-7 days</div>
           </div>
           
-          {}
+          {/* Average Rating */}
           <div style={styles.analyticsCard}>
             <div style={styles.cardHeader}>
               <i className="fas fa-thumbs-up" style={styles.cardIcon}></i>
@@ -153,7 +157,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
           </div>
         </div>
 
-        {}
+        {/* Pie Chart Section */}
         <div style={styles.chartSection}>
           <h3 style={styles.sectionTitle}>
             <i className="fas fa-chart-pie"></i> Average Rating Visualization
@@ -218,7 +222,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
           </div>
         </div>
         
-        {}
+        {/* Issues by Category Chart */}
         <div style={styles.chartSection}>
           <h3 style={styles.sectionTitle}>
             <i className="fas fa-chart-pie"></i> Issues by Category

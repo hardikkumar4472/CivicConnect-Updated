@@ -9,6 +9,8 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState("");
   const navigate = useNavigate();
+
+  // Municipal background images
   const municipalImages = [
     "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
     "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b",
@@ -17,8 +19,11 @@ function Home() {
   ];
 
   useEffect(() => {
+    // Set random background
     const randomImage = municipalImages[Math.floor(Math.random() * municipalImages.length)];
     setBackgroundImage(randomImage);
+
+    // 3-second loader
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
@@ -50,7 +55,7 @@ function Home() {
     }));
 
     try {
-      const url = `https://civicconnect-backend.onrender.com${endpoint}`;
+      const url = `http://localhost:5000${endpoint}`;
       const res = await axios.post(url, {
         email: loginData[role].email,
         password: loginData[role].password
@@ -87,7 +92,7 @@ function Home() {
       <div style={styles.loadingScreen}>
         <div style={styles.loadingContent}>
           <img 
-            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png" 
+            src="https://i.ibb.co/WWMvn2mY/civic-connect-header.jpg" 
             alt="CivicConnect Logo" 
             style={styles.loadingLogo}
           />
@@ -101,22 +106,22 @@ function Home() {
 
   return (
     <div style={{ ...styles.appContainer, backgroundImage: `url(${backgroundImage})` }}>
-      {}
+      {/* Dark overlay for background */}
       <div style={styles.darkOverlay}></div>
       
-      {}
+      {/* Main content container */}
       <div style={styles.fullScreenContent}>
-        {}
+        {/* Header section */}
         <header style={styles.header}>
           <img
-            src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png"
+            src="https://i.ibb.co/WWMvn2mY/civic-connect-header.jpg"
             alt="CivicConnect Logo"
             style={styles.headerLogo}
           />
           <h1 style={styles.headerTitle}>Municipal Services Portal</h1>
         </header>
 
-        {}
+        {/* Role selection buttons */}
         <div style={styles.roleSelector}>
           <button 
             onClick={() => setSelectedRole("citizen")}
@@ -147,7 +152,7 @@ function Home() {
           </button>
         </div>
 
-        {}
+        {/* Login form container */}
         <div style={styles.formContainer}>
           {selectedRole === "admin" && (
             <form onSubmit={(e) => handleLogin("admin", e)} style={styles.loginForm}>
@@ -162,7 +167,7 @@ function Home() {
                     ...prev,
                     admin: { ...prev.admin, email: e.target.value }
                   }))}
-                  placeholder="admin@gmail.com"
+                  placeholder="admin@municipal.gov"
                   style={styles.inputField}
                   required
                 />
@@ -217,7 +222,7 @@ function Home() {
                     ...prev,
                     citizen: { ...prev.citizen, email: e.target.value }
                   }))}
-                  placeholder="citizen@gmail.com"
+                  placeholder="citizen@example.com"
                   style={styles.inputField}
                   required
                 />
@@ -272,7 +277,7 @@ function Home() {
                     ...prev,
                     sectorHead: { ...prev.sectorHead, email: e.target.value }
                   }))}
-                  placeholder="sector@gmail.com"
+                  placeholder="sector@municipal.gov"
                   style={styles.inputField}
                   required
                 />
@@ -315,7 +320,7 @@ function Home() {
           )}
         </div>
 
-        {}
+        {/* Footer */}
         <footer style={styles.footer}>
           <div style={styles.loginFooter}>
             <Link to="/forgot-password" style={styles.forgotPassword}>Forgot Password?</Link>
@@ -329,7 +334,7 @@ function Home() {
 
       <ToastContainer position="top-center" autoClose={5000} />
 
-      {}
+      {/* Inline styles */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');

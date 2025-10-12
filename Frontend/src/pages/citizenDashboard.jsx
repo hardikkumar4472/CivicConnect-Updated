@@ -35,7 +35,7 @@ export default function CitizenDashboard() {
     if (closedIssues.length > 0) {
       try {
         const response = await axios.get(
-          "https://civicconnect-backend.onrender.com/api/feedback/batch",
+          "http://localhost:5000/api/feedback/batch",
           {
             headers: { Authorization: `Bearer ${token}` },
             params: {
@@ -69,10 +69,10 @@ export default function CitizenDashboard() {
       }
 
       const [citizenRes, issuesRes] = await Promise.all([
-        axios.get("https://civicconnect-backend.onrender.com/api/citizen/me", {
+        axios.get("http://localhost:5000/api/citizen/me", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("https://civicconnect-backend.onrender.com/api/issues/my", {
+        axios.get("http://localhost:5000/api/issues/my", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -124,7 +124,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://civicconnect-backend.onrender.com/api/issues/report",
+        "http://localhost:5000/api/issues/report",
         newIssueData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -142,7 +142,7 @@ export default function CitizenDashboard() {
       setExporting(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://civicconnect-backend.onrender.com/api/issues/export-issues",
+        "http://localhost:5000/api/issues/export-issues",
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob"
@@ -181,7 +181,7 @@ export default function CitizenDashboard() {
   try {
      const token = localStorage.getItem("token");
     await axios.post(
-      "https://civicconnect-backend.onrender.com/api/feedback/submit",
+      "http://localhost:5000/api/feedback/submit",
       { issueId, rating, comment },
       { headers: { Authorization: `Bearer ${token}` } }
     );

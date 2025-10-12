@@ -4,12 +4,16 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+// Fix for default markers in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
+
+// Custom marker icon for better visibility
 const customIcon = new L.Icon({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   iconSize: [25, 41],
@@ -18,6 +22,7 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41]
 });
 
+// Component to handle map clicks
 function LocationMarker({ position, setPosition }) {
   useMapEvents({
     click(e) {
@@ -37,13 +42,13 @@ export default function NewIssueModal({ onSubmit, onClose }) {
     latitude: '28.7041',
     longitude: '77.1025',
     address: '',
-    sector: '', 
-    houseId: '' 
+    sector: '', // Will be populated from API
+    houseId: '' // Will be populated from API
   });
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [fetchingData, setFetchingData] = useState(true);
-  const [mapPosition, setMapPosition] = useState([28.7041, 77.1025]); 
+  const [mapPosition, setMapPosition] = useState([28.7041, 77.1025]); // Default to Delhi, India
   const [locationName, setLocationName] = useState('Delhi, India');
 
   useEffect(() => {
@@ -52,7 +57,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
         const token = localStorage.getItem('token');
         console.log('Fetching citizen data with token:', token ? 'Present' : 'Missing');
         
-        const response = await axios.get('https://civicconnect-backend.onrender.com/api/citizen/me', {
+        const response = await axios.get('http://localhost:5000/api/citizen/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -80,14 +85,20 @@ export default function NewIssueModal({ onSubmit, onClose }) {
 
     fetchCitizenData();
   }, [onClose]);
+
+  // Update form data when map position changes
   useEffect(() => {
     setFormData(prev => ({
       ...prev,
       latitude: mapPosition[0].toFixed(6),
       longitude: mapPosition[1].toFixed(6)
     }));
+    
+    // Get location name from coordinates
     fetchLocationName(mapPosition[0], mapPosition[1]);
   }, [mapPosition]);
+
+  // Initialize coordinates when component mounts
   useEffect(() => {
     setFormData(prev => ({
       ...prev,
@@ -132,6 +143,8 @@ export default function NewIssueModal({ onSubmit, onClose }) {
     
     console.log('Form submission started');
     console.log('Current form data:', formData);
+    
+    // Validate required fields
     if (!formData.description.trim()) {
       alert('Please enter a description for the issue');
       return;
@@ -141,6 +154,8 @@ export default function NewIssueModal({ onSubmit, onClose }) {
       alert('Please select a location on the map');
       return;
     }
+    
+    // Ensure coordinates are numbers
     const lat = parseFloat(formData.latitude);
     const lng = parseFloat(formData.longitude);
     
@@ -149,6 +164,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
       return;
     }
     
+    // Validate sector and houseId are present
     if (!formData.sector || !formData.houseId) {
       alert('Missing sector or house ID information. Please refresh the page and try again.');
       return;
@@ -156,6 +172,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
     
     setLoading(true);
     try {
+      // Create a clean form data object with proper coordinates
       const cleanFormData = {
         category: formData.category,
         description: formData.description.trim(),
@@ -166,9 +183,14 @@ export default function NewIssueModal({ onSubmit, onClose }) {
         sector: formData.sector,
         houseId: formData.houseId
       };
+      
       console.log('Submitting issue with clean data:', cleanFormData);
+      
+      // Call the parent's onSubmit function
       const result = await onSubmit(cleanFormData);
       console.log('Submit result:', result);
+      
+      // Show success message and redirect to citizen dashboard
       alert('Issue submitted successfully! Redirecting to dashboard...');
       onClose();
       navigate('/citizen-dashboard');
@@ -299,7 +321,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
             </select>
           </div>
           
-          {}
+          {/* Read-only Sector field */}
           <div style={{ marginBottom: '15px' }}>
             <label style={{
               display: 'block',
@@ -327,7 +349,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
             />
           </div>
           
-          {}
+          {/* Read-only House ID field */}
           <div style={{ marginBottom: '15px' }}>
             <label style={{
               display: 'block',
@@ -355,7 +377,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
             />
           </div>
           
-          {}
+          {/* Rest of the form remains the same */}
           <div style={{ marginBottom: '15px' }}>
             <label style={{
               display: 'block',
@@ -448,7 +470,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
             />
           </div>
           
-          {}
+          {/* Location Map */}
           <div style={{ marginBottom: '15px' }}>
             <label style={{
               display: 'block',

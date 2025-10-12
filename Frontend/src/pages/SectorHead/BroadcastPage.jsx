@@ -33,7 +33,7 @@ const BroadcastPage = () => {
       }
 
       const response = await axios.post(
-        'https://civicconnect-backend.onrender.com/api/sector-head/broadcast',
+        'http://localhost:5000/api/sector-head/broadcast',
         formData,
         {
           headers: {
@@ -156,7 +156,7 @@ const BroadcastPage = () => {
         )}
       </div>
 
-      {}
+      {/* Inline CSS for full page styling */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
