@@ -13,7 +13,7 @@ router.put('/:id/status', authSectorHead, updateIssueStatus);
 router.post('/:id/comment', authSectorHead, addComment);
 router.post('/report', authCitizen, reportIssue);
 router.get('/my', authCitizen, getMyIssues);
-router.get('/sector', authSectorHead, getSectorIssues);
+router.get('/sector', getSectorIssues);
 router.put('/:id/close', authSectorHead, forceCloseIssue);
 router.get('/export-issues', protect, exportIssues);
 router.get('/issue-status', protect, getCitizenIssues);
