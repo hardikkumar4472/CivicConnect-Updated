@@ -94,7 +94,7 @@ export default function AdminDashboard() {
 
   const fetchAdminDetails = async () => {
     try {
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/admin/profile", {
+      const res = await axios.get("https://civicconnect-backend.onrender.com/api/issues/profile", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAdminName(res.data.name);
