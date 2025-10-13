@@ -39,9 +39,9 @@ function Home() {
   const handleLogin = async (role, e) => {
     e.preventDefault();
     const endpoint = {
-      admin: "/api/auth/login",
-      citizen: "/api/citizen/login",
-      sectorHead: "/api/sector-head/login"
+      admin: "api/auth/login",
+      citizen: "api/citizen/login",
+      sectorHead: "api/sector-head/login"
     }[role];
 
     setLoginData(prev => ({
