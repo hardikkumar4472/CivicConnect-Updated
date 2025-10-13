@@ -41,7 +41,7 @@ const IssueDetailsModal = ({
         
         setLoadingCitizenDetails(true);
         const response = await axios.get(
-          `https://civic-connect-vercel-hosted.vercel.app/sector-head/sector-citizens`,
+          `https://civic-connect-vercel-hosted.vercel.app/api/sector-head/sector-citizens`,
           { 
             headers: { Authorization: `Bearer ${token}` }
           }
