@@ -33,7 +33,7 @@ const ForgotPassword = () => {
     
     try {
       const response = await axios.post(
-        'https://civicconnect-backend.onrender.com/api/citizen/forgot-password', 
+        'https://civic-connect-vercel-hosted.vercel.app/api/citizen/forgot-password', 
         { email }
       );
       
