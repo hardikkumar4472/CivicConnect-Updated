@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +35,7 @@ const ForgotPassword = () => {
     
     try {
       const response = await axios.post(
-        'https://civic-connect-vercel-hosted.vercel.app/api/citizen/forgot-password', 
+        `${backend_URL}/api/citizen/forgot-password`,
         { email }
       );
       

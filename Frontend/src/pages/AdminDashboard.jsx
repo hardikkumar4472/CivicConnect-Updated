@@ -15,6 +15,7 @@ import {
   LineElement
 } from "chart.js";
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
 ChartJS.register(
   Title,
   Tooltip,
@@ -94,7 +95,7 @@ export default function AdminDashboard() {
 
   const fetchAdminDetails = async () => {
     try {
-      const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/issues/profile", {
+      const res = await axios.get(`${backend_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAdminName(res.data.name);
@@ -105,7 +106,7 @@ export default function AdminDashboard() {
 
   const fetchDashboard = async () => {
     try {
-      const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/issues/dashboard-summary", {
+      const res = await axios.get(`${backend_URL}/api/issues/dashboard-summary`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDashboardData(res.data);
@@ -116,7 +117,7 @@ export default function AdminDashboard() {
 
   const fetchSectors = async () => {
     try {
-      const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/issues/sectors", {
+      const res = await axios.get(`${backend_URL}/api/issues/sectors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectors(res.data);
@@ -127,7 +128,7 @@ export default function AdminDashboard() {
 
   const fetchSectorRatings = async () => {
     try {
-      const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/feedback/sector-ratings", {
+      const res = await axios.get(`${backend_URL}/api/feedback/sector-ratings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSectorRatings(res.data);
@@ -139,7 +140,7 @@ export default function AdminDashboard() {
   const sendBroadcast = async () => {
     try {
       await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/issues/broadcast", 
+        `${backend_URL}/api/issues/broadcast`, 
         { subject: broadcastSubject, message: broadcastMsg },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -155,7 +156,7 @@ export default function AdminDashboard() {
   const createSectorHead = async () => {
     try {
       await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/sector-head/register",
+        `${backend_URL}/api/sector-head/register`,
         sectorHeadData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -180,7 +181,7 @@ export default function AdminDashboard() {
 
   const downloadCSV = async () => {
     try {
-      const response = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/issues/export-issues", {
+      const response = await axios.get(`${backend_URL}/api/issues/export-issues`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob", 
       });

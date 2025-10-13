@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 const BroadcastPage = () => {
   const [formData, setFormData] = useState({
     subject: '',
@@ -33,7 +35,7 @@ const BroadcastPage = () => {
       }
 
       const response = await axios.post(
-        'https://civic-connect-vercel-hosted.vercel.app/api/sector-head/broadcast',
+        `${backend_URL}/api/sector-head/broadcast`,
         formData,
         {
           headers: {

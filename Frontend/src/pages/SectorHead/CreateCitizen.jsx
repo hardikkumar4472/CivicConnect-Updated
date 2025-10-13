@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 export default function CreateCitizen({ sectorName, onClose }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +30,7 @@ export default function CreateCitizen({ sectorName, onClose }) {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/citizen/register",
+        `${backend_URL}/api/citizen/register`,
         {
           ...formData,
           sector: sectorName

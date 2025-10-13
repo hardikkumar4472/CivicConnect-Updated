@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnalyticsModal from './AnalyticsModal'; 
-
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
 const SectorHeadHeader = ({ sectorName, onShowDashboard }) => {
   const navigate = useNavigate();
   const [showAnalytics, setShowAnalytics] = useState(false);
@@ -23,7 +23,7 @@ const SectorHeadHeader = ({ sectorName, onShowDashboard }) => {
     setLoadingAnalytics(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/analytics", {
+      const response = await fetch(`${backend_URL}/api/sector-head/analytics`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();

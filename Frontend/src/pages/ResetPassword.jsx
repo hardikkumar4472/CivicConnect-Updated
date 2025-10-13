@@ -4,6 +4,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 const ResetPassword = () => {
   const { token } = useParams();
   const [formData, setFormData] = useState({
@@ -61,7 +63,7 @@ const ResetPassword = () => {
     
     try {
       const response = await axios.post(
-        `https://civic-connect-vercel-hosted.vercel.app/api/citizen/reset-password/${token}`,
+        `${backend_URL}/api/citizen/reset-password/${token}`,
         { password: formData.password }
       );
       

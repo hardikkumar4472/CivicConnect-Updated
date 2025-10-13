@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
   const [analytics, setAnalytics] = useState(initialAnalytics);
   const [loadingRating, setLoadingRating] = useState(false);
@@ -12,7 +14,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
         
         setLoadingRating(true);
         const ratingResponse = await fetch(
-          "https://civic-connect-vercel-hosted.vercel.app/api/sector-head/average-rating",
+          `${backend_URL}/api/sector-head/average-rating`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -35,7 +37,7 @@ const AnalyticsModal = ({ analytics: initialAnalytics, onClose }) => {
 
         setLoadingTotalIssues(true);
         const analyticsResponse = await fetch(
-          "https://civic-connect-vercel-hosted.vercel.app/api/sector-head/analytics",
+          `${backend_URL}/api/sector-head/analytics`,
           {
             headers: {
               Authorization: `Bearer ${token}`

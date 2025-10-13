@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
 const IssueDetailsModal = ({ 
   selectedIssue, 
   onClose,
@@ -41,7 +41,7 @@ const IssueDetailsModal = ({
         
         setLoadingCitizenDetails(true);
         const response = await axios.get(
-          `https://civic-connect-vercel-hosted.vercel.app/api/sector-head/sector-citizens`,
+          `${backend_URL}/api/sector-head/sector-citizens`,
           { 
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -91,7 +91,7 @@ const IssueDetailsModal = ({
 
     // Make API call to update status
     const response = await axios.put(
-      `https://civic-connect-vercel-hosted.vercel.app/api/issues/${selectedIssue._id}/status`,
+      `${backend_URL}/api/issues/${selectedIssue._id}/status`,
       { status: newStatus },
       {
         headers: {
@@ -137,7 +137,7 @@ const IssueDetailsModal = ({
       const token = localStorage.getItem("token");
       
       const response = await axios.post(
-        `https://civic-connect-vercel-hosted.vercel.app/api/issues/${selectedIssue._id}/comment`,
+        `${backend_URL}/api/issues/${selectedIssue._id}/comment`,
         { text: comment },
         {
           headers: {

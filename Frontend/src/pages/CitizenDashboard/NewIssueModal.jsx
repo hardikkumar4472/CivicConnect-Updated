@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -52,7 +53,7 @@ export default function NewIssueModal({ onSubmit, onClose }) {
         const token = localStorage.getItem('token');
         console.log('Fetching citizen data with token:', token ? 'Present' : 'Missing');
         
-        const response = await axios.get('https://civic-connect-vercel-hosted.vercel.app/api/citizen/me', {
+        const response = await axios.get(`${backend_URL}/api/citizen/me`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

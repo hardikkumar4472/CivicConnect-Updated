@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
 
 function Home() {
   const [selectedRole, setSelectedRole] = useState("citizen");
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState("");
+  const [showCredentials, setShowCredentials] = useState(false);
+  const [showHowToUse, setShowHowToUse] = useState(false);
   const navigate = useNavigate();
   const municipalImages = [
     "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
@@ -40,17 +44,17 @@ function Home() {
       sectorHead: "/api/sector-head/login"
     }[role];
 
-    setLoginData(prev => ({ 
-      ...prev, 
-      [role]: { 
-        ...prev[role], 
-        isLoading: true, 
-        error: "" 
-      } 
+    setLoginData(prev => ({
+      ...prev,
+      [role]: {
+        ...prev[role],
+        isLoading: true,
+        error: ""
+      }
     }));
 
     try {
-      const url = `https://civic-connect-vercel-hosted.vercel.app${endpoint}`;
+      const url = `${backend_URL}${endpoint}`;
       const res = await axios.post(url, {
         email: loginData[role].email,
         password: loginData[role].password
@@ -82,6 +86,27 @@ function Home() {
     }
   };
 
+  const fillCredentials = (role) => {
+    const credentials = {
+      citizen: { email: "hardikv715@gmail.com", password: "Ha@010190" },
+      sectorHead: { email: "hardikm332004@gmail.com", password: "Ha@010190" },
+      admin: { email: "civicconnectpvt@gmail.com", password: "Ha@010190" }
+    };
+
+    setLoginData(prev => ({
+      ...prev,
+      [role]: {
+        ...prev[role],
+        email: credentials[role].email,
+        password: credentials[role].password
+      }
+    }));
+    
+    setSelectedRole(role);
+    setShowCredentials(false);
+    toast.success(`${role.charAt(0).toUpperCase() + role.slice(1)} credentials filled!`);
+  };
+
   if (loading) {
     return (
       <div style={styles.loadingScreen}>
@@ -104,6 +129,148 @@ function Home() {
       {}
       <div style={styles.darkOverlay}></div>
       
+      {}
+      {showCredentials && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            <div style={styles.modalHeader}>
+              <h2 style={styles.modalTitle}>Login Credentials</h2>
+              <button 
+                style={styles.closeButton}
+                onClick={() => setShowCredentials(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div style={styles.credentialsContainer}>
+              <div style={styles.credentialCard}>
+                <h3 style={styles.credentialTitle}>Citizen</h3>
+                <p style={styles.credentialText}>Email: hardikv715@gmail.com</p>
+                <p style={styles.credentialText}>Password: Ha@010190</p>
+                <button 
+                  style={styles.fillButton}
+                  onClick={() => fillCredentials("citizen")}
+                >
+                  Fill Credentials
+                </button>
+              </div>
+              <div style={styles.credentialCard}>
+                <h3 style={styles.credentialTitle}>Sector Head</h3>
+                <p style={styles.credentialText}>Email: hardikm332004@gmail.com</p>
+                <p style={styles.credentialText}>Password: Ha@010190</p>
+                <button 
+                  style={styles.fillButton}
+                  onClick={() => fillCredentials("sectorHead")}
+                >
+                  Fill Credentials
+                </button>
+              </div>
+              <div style={styles.credentialCard}>
+                <h3 style={styles.credentialTitle}>Admin</h3>
+                <p style={styles.credentialText}>Email: civicconnect pvt@gmail.com</p>
+                <p style={styles.credentialText}>Password: Ha@010190</p>
+                <button 
+                  style={styles.fillButton}
+                  onClick={() => fillCredentials("admin")}
+                >
+                  Fill Credentials
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {}
+      {showHowToUse && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.howToUseModal}>
+            <div style={styles.modalHeader}>
+              <h2 style={styles.modalTitle}>How to Use CivicConnect</h2>
+              <button 
+                style={styles.closeButton}
+                onClick={() => setShowHowToUse(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div style={styles.howToUseContent}>
+              <h3 style={styles.sectionTitle}>CivicConnect - A Public Grievance Automation System</h3>
+              
+              <p style={styles.description}>
+                CivicConnect is a smart city automation platform designed to bridge the gap between citizens and municipal authorities. 
+                Our solution streamlines the issue reporting and resolution process, eliminating the inefficiencies of traditional 
+                systems that involve lengthy paperwork and delayed responses.
+              </p>
+
+              <div style={styles.featuresSection}>
+                <h4 style={styles.featureSectionTitle}>🚀 Features</h4>
+                
+                <div style={styles.featureCategory}>
+                  <h5 style={styles.featureTitle}>For Citizens</h5>
+                  <ul style={styles.featureList}>
+                    <li><strong>Issue Reporting:</strong> Submit detailed issues with descriptions, categories, and location data</li>
+                    <li><strong>Issue Tracking:</strong> Monitor the status of reported issues in real-time</li>
+                    <li><strong>Export Functionality:</strong> Download issue history for personal records</li>
+                    <li><strong>Gathering Requests:</strong> Submit gathering requests for events and get approval from sector heads</li>
+                  </ul>
+                </div>
+
+                <div style={styles.featureCategory}>
+                  <h5 style={styles.featureTitle}>For Sector Heads (Municipal Corporation Representatives)</h5>
+                  <ul style={styles.featureList}>
+                    <li><strong>Issue Management:</strong> Filter, prioritize, and manage issues assigned to their sector</li>
+                    <li><strong>Status Updates:</strong> Mark issue status (pending, in progress, resolved) and add comments</li>
+                    <li><strong>Email Broadcasts:</strong> Send important updates to citizens in their sector</li>
+                    <li><strong>Dashboard Analytics:</strong> View comprehensive summary and performance metrics</li>
+                    <li><strong>Gathering Request Management:</strong> Approve or reject gathering requests based on conditions</li>
+                  </ul>
+                </div>
+
+                <div style={styles.featureCategory}>
+                  <h5 style={styles.featureTitle}>For Administrators/Mayors</h5>
+                  <ul style={styles.featureList}>
+                    <li><strong>User Management:</strong> Create sector heads and manage system access</li>
+                    <li><strong>Centralized Dashboard:</strong> Track overall system performance and issue resolution rates</li>
+                    <li><strong>Broadcast System:</strong> Send important announcements to all citizens</li>
+                    <li><strong>Data Export:</strong> Generate Excel reports of all issues</li>
+                    <li><strong>Performance Analytics:</strong> View rating graphs to evaluate sector performance</li>
+                  </ul>
+                </div>
+
+                <div style={styles.featureCategory}>
+                  <h5 style={styles.featureTitle}>Gathering Request System</h5>
+                  <ul style={styles.featureList}>
+                    <li><strong>Event Submission:</strong> Citizens can submit gathering requests for events with details</li>
+                    <li><strong>Approval Workflow:</strong> Sector heads review and approve/reject requests based on conditions</li>
+                    <li><strong>Status Tracking:</strong> Real-time tracking of gathering request status</li>
+                    <li><strong>Condition-based Approval:</strong> Automatic validation based on municipal guidelines</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {}
+      <div style={styles.utilityButtons}>
+        <button 
+          style={styles.utilityButton}
+          onClick={() => setShowCredentials(true)}
+        >
+          <i className="fas fa-key" style={styles.utilityIcon}></i>
+          Login Credentials
+        </button>
+        <button 
+          style={styles.utilityButton}
+          onClick={() => setShowHowToUse(true)}
+        >
+          <i className="fas fa-book" style={styles.utilityIcon}></i>
+          How to Use
+        </button>
+      </div>
+
       {}
       <div style={styles.fullScreenContent}>
         {}
@@ -494,6 +661,178 @@ const styles = {
     padding: '20px',
     boxSizing: 'border-box',
   },
+  utilityButtons: {
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    display: 'flex',
+    gap: '10px',
+    zIndex: 1000,
+  },
+  utilityButton: {
+    padding: '10px 15px',
+    backgroundColor: 'rgba(79, 195, 247, 0.8)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '25px',
+    fontSize: '0.8rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    backdropFilter: 'blur(10px)',
+    zIndex: 1001,
+  },
+  utilityIcon: {
+    fontSize: '0.8rem',
+  },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2000,
+    backdropFilter: 'blur(5px)',
+  },
+  modalContent: {
+    backgroundColor: 'rgba(19, 28, 46, 0.95)',
+    borderRadius: '20px',
+    padding: '30px',
+    width: '90%',
+    maxWidth: '600px',
+    maxHeight: '80vh',
+    overflowY: 'auto',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+    animation: 'fadeIn 0.3s ease',
+  },
+  howToUseModal: {
+    backgroundColor: 'rgba(19, 28, 46, 0.95)',
+    borderRadius: '20px',
+    padding: '30px',
+    width: '90%',
+    maxWidth: '800px',
+    maxHeight: '80vh',
+    overflowY: 'auto',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+    animation: 'fadeIn 0.3s ease',
+  },
+  modalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '20px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    paddingBottom: '15px',
+  },
+  modalTitle: {
+    color: 'white',
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    margin: 0,
+  },
+  closeButton: {
+    background: 'none',
+    border: 'none',
+    color: 'white',
+    fontSize: '1.2rem',
+    cursor: 'pointer',
+    padding: '5px',
+    borderRadius: '50%',
+    width: '30px',
+    height: '30px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.3s ease',
+  },
+  credentialsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  credentialCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: '15px',
+    padding: '20px',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  credentialTitle: {
+    color: '#4fc3f7',
+    fontSize: '1.2rem',
+    fontWeight: '600',
+    margin: '0 0 10px 0',
+  },
+  credentialText: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: '0.9rem',
+    margin: '5px 0',
+  },
+  fillButton: {
+    backgroundColor: 'rgba(79, 195, 247, 0.8)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '20px',
+    padding: '8px 15px',
+    fontSize: '0.8rem',
+    cursor: 'pointer',
+    marginTop: '10px',
+    transition: 'all 0.3s ease',
+  },
+  howToUseContent: {
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+  sectionTitle: {
+    color: '#4fc3f7',
+    fontSize: '1.3rem',
+    fontWeight: '600',
+    marginBottom: '15px',
+  },
+  description: {
+    fontSize: '0.95rem',
+    lineHeight: '1.6',
+    marginBottom: '20px',
+    color: 'rgba(255, 255, 255, 0.8)',
+  },
+  featuresSection: {
+    marginTop: '20px',
+  },
+  featureSectionTitle: {
+    color: '#4fc3f7',
+    fontSize: '1.2rem',
+    fontWeight: '600',
+    marginBottom: '15px',
+  },
+  featureCategory: {
+    marginBottom: '20px',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    padding: '15px',
+    borderRadius: '10px',
+  },
+  featureTitle: {
+    color: '#4fc3f7',
+    fontSize: '1rem',
+    fontWeight: '600',
+    marginBottom: '10px',
+  },
+  featureList: {
+    paddingLeft: '20px',
+    margin: 0,
+  },
+  // featureList li: {
+  //   marginBottom: '8px',
+  //   fontSize: '0.9rem',
+  //   lineHeight: '1.5',
+  //   color: 'rgba(255, 255, 255, 0.8)',
+  // },
   header: {
     display: 'flex',
     flexDirection: 'column',
@@ -550,7 +889,6 @@ const styles = {
   formContainer: {
     backgroundColor: 'rgba(19, 28, 46, 0)',
     borderRadius: '50px',
-    // padding: '20px',
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
     backdropFilter: 'blur(5px)',
     border: '1px solid rgba(255, 255, 255, 0.1)',

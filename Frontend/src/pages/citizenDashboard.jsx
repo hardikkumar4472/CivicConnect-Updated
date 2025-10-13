@@ -7,6 +7,8 @@ import IssueDetailsModal from "./CitizenDashboard/IssueDetailsModal";
 import NewIssueModal from "./CitizenDashboard/NewIssueModal";
 import FeedbackModal from "./FeedbackModal";
 
+const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 function CitizenRequests({ requests, setRequests, onCreateRequest }) {
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +16,7 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/request/my-requests", {
+        const res = await axios.get(`${backend_URL}/api/request/my-requests`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRequests(res.data);
@@ -49,11 +51,11 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
 
         .request-card {
           border: 1px solid #ddd;
-          border-radius: 10px;
+          border-radius: 15px;
           padding: 16px;
           margin-bottom: 12px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-          background: #fff;
+          box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+          background: #112240;
         }
 
         .request-header {
@@ -77,12 +79,12 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
         }
 
         .status-approved {
-          background: #d4edda;
+          background: #00ff3cff;
           color: #155724;
         }
 
         .status-rejected {
-          background: #f8d7da;
+          background: #ff0015ff;
           color: #721c24;
         }
 
@@ -108,7 +110,7 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
           background-color: #64ffda;
           color: #0a192f;
           border: none;
-          border-radius: 6px;
+          border-radius: 30px;
           font-weight: bold;
           cursor: pointer;
           display: flex;
@@ -124,7 +126,6 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
       `}</style>
 
       <div className="citizen-requests">
-        <h2>My Gathering Requests</h2>
         
         <button 
           className="create-request-btn"
@@ -244,15 +245,16 @@ function NewRequestModal({ onSubmit, onClose }) {
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 1000,
-      padding: '20px'
+      padding: '20px',
+      backdropFilter: 'blur(7px)'
     }}>
       <div style={{
-        backgroundColor: '#112240',
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
         padding: '30px',
-        borderRadius: '12px',
+        borderRadius: '60px',
         width: '100%',
-        maxWidth: '500px',
-        maxHeight: '90vh',
+        maxWidth: '600px',
+        maxHeight: '100vh',
         overflowY: 'auto',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
         border: '1px solid #233554'
@@ -293,7 +295,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               display: 'block',
               marginBottom: '8px',
               color: '#ccd6f6',
-              fontWeight: '500'
+              fontWeight: '500',
             }}>
               Gathering Name *
             </label>
@@ -303,9 +305,9 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.gatheringName}
               onChange={handleChange}
               style={{
-                width: '100%',
+                width: '90%',
                 padding: '12px',
-                borderRadius: '6px',
+                borderRadius: '30px',
                 border: errors.gatheringName ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
@@ -336,9 +338,9 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.type}
               onChange={handleChange}
               style={{
-                width: '100%',
+                width: '95%',
                 padding: '12px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
@@ -371,9 +373,9 @@ function NewRequestModal({ onSubmit, onClose }) {
               onChange={handleChange}
               min="1"
               style={{
-                width: '100%',
+                width: '91%',
                 padding: '12px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: errors.expectedPeople ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
@@ -405,9 +407,9 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.date}
               onChange={handleChange}
               style={{
-                width: '100%',
+                width: '91%',
                 padding: '12px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: errors.date ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
@@ -438,9 +440,9 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.location}
               onChange={handleChange}
               style={{
-                width: '100%',
+                width: '91%',
                 padding: '12px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: errors.location ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
@@ -468,7 +470,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               onClick={onClose}
               style={{
                 padding: '10px 20px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: '1px solid #233554',
                 background: 'transparent',
                 color: '#ccd6f6',
@@ -484,7 +486,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               disabled={loading}
               style={{
                 padding: '10px 20px',
-                borderRadius: '6px',
+                borderRadius: '40px',
                 border: 'none',
                 background: '#64ffda',
                 color: '#0a192f',
@@ -545,7 +547,7 @@ export default function CitizenDashboard() {
     if (closedIssues.length > 0) {
       try {
         const response = await axios.get(
-          "https://civic-connect-vercel-hosted.vercel.app/api/feedback/batch",
+          `${backend_URL}/api/feedback/batch`,
           {
             headers: { Authorization: `Bearer ${token}` },
             params: {
@@ -579,10 +581,10 @@ export default function CitizenDashboard() {
       }
 
       const [citizenRes, issuesRes] = await Promise.all([
-        axios.get("https://civic-connect-vercel-hosted.vercel.app/api/citizen/me", {
+        axios.get(`${backend_URL}/api/citizen/me`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("https://civic-connect-vercel-hosted.vercel.app/api/issues/my", {
+        axios.get(`${backend_URL}/api/issues/my`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -634,7 +636,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/issues/report",
+        `${backend_URL}/api/issues/report`,
         newIssueData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -651,14 +653,14 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/request/create",
+        `${backend_URL}/api/request/create`,
         requestData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
       // Refresh the requests list
       const token2 = localStorage.getItem("token");
-      const requestsRes = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/request/my-requests", {
+      const requestsRes = await axios.get(`${backend_URL}/api/request/my-requests`, {
         headers: { Authorization: `Bearer ${token2}` }
       });
       
@@ -676,7 +678,7 @@ export default function CitizenDashboard() {
       setExporting(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://civic-connect-vercel-hosted.vercel.app/api/issues/export-issues",
+        `${backend_URL}/api/issues/export-issues`,
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob"
@@ -715,7 +717,7 @@ export default function CitizenDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://civic-connect-vercel-hosted.vercel.app/api/feedback/submit",
+        `${backend_URL}/api/feedback/submit`,
         { issueId, rating, comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -1033,7 +1035,7 @@ export default function CitizenDashboard() {
                   backgroundColor: '#64ffda',
                   color: '#0a192f',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '40px',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   display: 'flex',
