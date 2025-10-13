@@ -7,7 +7,9 @@ import IssueCard from "./IssueCard";
 import DashboardSummaryModal from "./DashboardSummaryModal";
 import IssueDetailsModal from "./IssueDetailsModal";
 import CreateCitizen from "./CreateCitizen";
+
 const backend_URL = import.meta.env.VITE_BACKEND_URL;
+
 // Sector Requests Component
 function SectorRequests() {
   const [requests, setRequests] = useState([]);
@@ -98,42 +100,61 @@ function SectorRequests() {
       <style>{`
         .container {
           padding: 16px;
+          width: 100%;
+          box-sizing: border-box;
         }
         .title {
-          font-size: 20px;
+          font-size: clamp(18px, 4vw, 24px);
           font-weight: bold;
           margin-bottom: 16px;
           color: #ccd6f6;
+          text-align: center;
         }
         .empty {
           color: #8892b0;
           text-align: center;
+          padding: 20px;
+          font-size: clamp(14px, 3vw, 16px);
         }
         .card {
           background: #112240;
-          padding: 16px;
+          padding: clamp(12px, 3vw, 16px);
           margin-bottom: 12px;
           border-radius: 10px;
           box-shadow: 0 2px 6px rgba(0,0,0,0.1);
           border: 1px solid #233554;
+          width: 100%;
+          box-sizing: border-box;
         }
         .card-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
           margin-bottom: 8px;
+          flex-direction: column;
+          gap: 8px;
+        }
+        @media (min-width: 480px) {
+          .card-header {
+            flex-direction: row;
+            align-items: center;
+          }
         }
         .card-title {
           font-weight: bold;
           color: #ccd6f6;
+          font-size: clamp(14px, 3vw, 16px);
+          margin: 0;
+          word-break: break-word;
         }
         .text {
-          font-size: 14px;
+          font-size: clamp(12px, 2.5vw, 14px);
           margin: 4px 0;
           color: #8892b0;
+          line-height: 1.4;
         }
         .remarks {
-          font-size: 14px;
+          font-size: clamp(12px, 2.5vw, 14px);
           margin-top: 6px;
           color: #a8b2d1;
           font-style: italic;
@@ -141,8 +162,9 @@ function SectorRequests() {
         .badge {
           padding: 4px 8px;
           border-radius: 6px;
-          font-size: 12px;
+          font-size: clamp(10px, 2.5vw, 12px);
           text-transform: capitalize;
+          white-space: nowrap;
         }
         .badge.success {
           background: #d1fae5;
@@ -160,14 +182,17 @@ function SectorRequests() {
           margin-top: 10px;
           display: flex;
           gap: 10px;
+          flex-wrap: wrap;
         }
         .btn {
-          padding: 6px 12px;
+          padding: 8px 16px;
           border: none;
           border-radius: 6px;
           cursor: pointer;
           color: white;
-          font-size: 14px;
+          font-size: clamp(12px, 2.5vw, 14px);
+          flex: 1;
+          min-width: 80px;
         }
         .btn.approve {
           background-color: #16a34a;
@@ -184,6 +209,8 @@ function SectorRequests() {
         .loading {
           text-align: center;
           color: #8892b0;
+          padding: 20px;
+          font-size: clamp(14px, 3vw, 16px);
         }
       `}</style>
     </div>
@@ -392,7 +419,7 @@ export default function SectorHeadDashboard() {
       {/* Custom Navbar */}
       <div style={{
         backgroundColor: '#0a192f',
-        padding: '15px 20px',
+        padding: 'clamp(10px, 3vw, 15px) clamp(15px, 4vw, 20px)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -400,33 +427,38 @@ export default function SectorHeadDashboard() {
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+        flexWrap: 'wrap',
+        gap: '10px'
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '20px'
+          gap: 'clamp(10px, 3vw, 20px)',
+          flex: 1,
+          minWidth: '200px'
         }}>
           <h2 style={{
             color: '#64ffda',
             margin: 0,
-            fontSize: '1.5rem',
+            fontSize: 'clamp(1.1rem, 4vw, 1.5rem)',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
             textShadow: '0 0 10px rgba(100, 255, 218, 0.3)',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            wordBreak: 'break-word'
           }}>
             <i className="fas fa-map-marked-alt" style={{ transform: 'rotate(-15deg)' }}></i>
             {sectorName}
           </h2>
         </div>
         
-        {/* Mobile Menu Button (hidden on larger screens) */}
+        {/* Mobile Menu Button */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           style={{
-            display: 'none',
+            display: 'block',
             background: 'transparent',
             border: 'none',
             color: '#64ffda',
@@ -436,16 +468,196 @@ export default function SectorHeadDashboard() {
             borderRadius: '5px',
             transition: 'all 0.3s ease'
           }}
+          className="mobile-menu-btn"
         >
           <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
         
         {/* Main Navigation */}
         <div style={{
-          display: 'flex',
-          gap: '15px',
-          alignItems: 'center'
-        }}>
+          display: isMenuOpen ? 'flex' : 'none',
+          flexDirection: 'column',
+          gap: '10px',
+          alignItems: 'stretch',
+          width: '100%',
+          padding: '15px 0',
+          borderTop: '1px solid #233554',
+          marginTop: '10px'
+        }}
+        className="mobile-nav"
+        >
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '10px',
+            width: '100%'
+          }}>
+            <button 
+              onClick={() => setShowCreateCitizen(true)}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#64ffda',
+                border: 'none',
+                borderRadius: '30px',
+                color: '#0a192f',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px'
+              }}
+            >
+              <i className="fas fa-user-plus"></i>
+              <span>Create Citizen</span>
+            </button>
+
+            <button 
+              onClick={() => navigate('/send-broadcast')}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#112240',
+                border: '1px solid #233554',
+                borderRadius: '30px',
+                color: '#ccd6f6',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px'
+              }}
+            >
+              <i className="fas fa-bullhorn"></i>
+              <span>Broadcast</span>
+            </button>
+
+            <button 
+              onClick={() => setShowDashboard(true)}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#112240',
+                border: '1px solid #233554',
+                borderRadius: '30px',
+                color: '#ccd6f6',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px'
+              }}
+            >
+              <i className="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </button>
+
+            <button 
+              onClick={() => {
+                setShowRequests(true);
+                setIsMenuOpen(false);
+              }}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#112240',
+                border: '1px solid #233554',
+                borderRadius: '30px',
+                color: '#ccd6f6',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px'
+              }}
+            >
+              <i className="fas fa-calendar-check"></i>
+              <span>Gathering Requests</span>
+            </button>
+
+            <button 
+              onClick={() => {
+                fetchAnalytics();
+                setShowAnalytics(true);
+                setIsMenuOpen(false);
+              }}
+              disabled={loadingAnalytics}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#112240',
+                border: '1px solid #233554',
+                borderRadius: '30px',
+                color: '#ccd6f6',
+                fontWeight: 'bold',
+                cursor: loadingAnalytics ? 'not-allowed' : 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px',
+                opacity: loadingAnalytics ? 0.7 : 1
+              }}
+            >
+              {loadingAnalytics ? (
+                <i className="fas fa-spinner fa-spin"></i>
+              ) : (
+                <i className="fas fa-chart-line"></i>
+              )}
+              <span>Analytics</span>
+            </button>
+
+            <button 
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/");
+              }}
+              style={{
+                padding: '10px 12px',
+                backgroundColor: '#112240',
+                border: '1px solid #233554',
+                borderRadius: '30px',
+                color: '#ccd6f6',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: 'clamp(12px, 2.5vw, 14px)',
+                minHeight: '44px'
+              }}
+            >
+              <i className="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div style={{
+          display: 'none',
+          gap: '12px',
+          alignItems: 'center',
+          flexWrap: 'wrap'
+        }}
+        className="desktop-nav"
+        >
           <button 
             onClick={() => setShowCreateCitizen(true)}
             style={{
@@ -460,7 +672,9 @@ export default function SectorHeadDashboard() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)'
+              boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
             }}
           >
             <i className="fas fa-user-plus"></i>
@@ -480,7 +694,9 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
             }}
           >
             <i className="fas fa-bullhorn"></i>
@@ -500,7 +716,9 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
             }}
           >
             <i className="fas fa-tachometer-alt"></i>
@@ -522,7 +740,9 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
             }}
           >
             <i className="fas fa-calendar-check"></i>
@@ -542,11 +762,13 @@ export default function SectorHeadDashboard() {
               borderRadius: '30px',
               color: '#ccd6f6',
               fontWeight: 'bold',
-              cursor: 'pointer',
+              cursor: loadingAnalytics ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
+              fontSize: '14px',
+              whiteSpace: 'nowrap',
               opacity: loadingAnalytics ? 0.7 : 1
             }}
           >
@@ -574,7 +796,9 @@ export default function SectorHeadDashboard() {
               transition: 'all 0.3s ease',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
             }}
           >
             <i className="fas fa-sign-out-alt"></i>
@@ -587,7 +811,7 @@ export default function SectorHeadDashboard() {
         flex: 1,
         width: '100%',
         overflowY: 'auto',
-        padding: '20px',
+        padding: 'clamp(15px, 3vw, 20px)',
         boxSizing: 'border-box',
         background: 'linear-gradient(135deg, #0a192f 0%, #0f2746 100%)'
       }}>
@@ -595,26 +819,29 @@ export default function SectorHeadDashboard() {
           <div style={{
             width: '100%',
             maxWidth: '100%',
-            padding: '0 20px',
+            padding: '0',
             boxSizing: 'border-box'
           }}>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               marginBottom: '20px',
-              flexWrap: 'wrap',
+              flexDirection: 'column',
               gap: '15px'
             }}>
               <h2 style={{
-                fontSize: '1.8rem',
+                fontSize: 'clamp(1.3rem, 5vw, 1.8rem)',
                 fontWeight: '600',
                 margin: 0,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '10px',
                 color: '#ccd6f6',
-                textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
+                textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+                textAlign: 'center',
+                width: '100%',
+                justifyContent: 'center'
               }}>
                 <i className="fas fa-exclamation-circle" style={{ 
                   color: '#64ffda'
@@ -624,15 +851,17 @@ export default function SectorHeadDashboard() {
               
               <div style={{
                 display: 'flex',
-                gap: '10px',
-                flexWrap: 'wrap'
+                gap: '8px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                width: '100%'
               }}>
                 {statusFilters.map(filter => (
                   <button
                     key={filter.id}
                     onClick={() => setActiveFilter(filter.id)}
                     style={{
-                      padding: '8px 15px',
+                      padding: '8px 12px',
                       borderRadius: '20px',
                       border: 'none',
                       background: activeFilter === filter.id ? 
@@ -641,14 +870,18 @@ export default function SectorHeadDashboard() {
                       color: activeFilter === filter.id ? '#0a192f' : '#ccd6f6',
                       cursor: 'pointer',
                       fontWeight: '600',
-                      fontSize: '0.8rem',
+                      fontSize: 'clamp(11px, 2.5vw, 13px)',
                       transition: 'all 0.3s ease',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '5px',
                       boxShadow: activeFilter === filter.id ? 
                         '0 4px 15px rgba(100, 255, 218, 0.4)' : 
-                        '0 2px 5px rgba(0, 0, 0, 0.1)'
+                        '0 2px 5px rgba(0, 0, 0, 0.1)',
+                      minHeight: '36px',
+                      flex: '1 0 auto',
+                      maxWidth: '140px',
+                      justifyContent: 'center'
                     }}
                   >
                     {filter.label}
@@ -660,7 +893,7 @@ export default function SectorHeadDashboard() {
             {filteredIssues.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '40px 20px',
+                padding: 'clamp(30px, 8vw, 40px) clamp(15px, 4vw, 20px)',
                 color: '#8892b0',
                 backgroundColor: 'rgba(17, 34, 64, 0.7)',
                 borderRadius: '12px',
@@ -669,13 +902,13 @@ export default function SectorHeadDashboard() {
                 transition: 'all 0.3s ease'
               }}>
                 <i className="fas fa-check-circle" style={{
-                  fontSize: '3.5rem',
+                  fontSize: 'clamp(2.5rem, 10vw, 3.5rem)',
                   color: '#64ffda',
                   marginBottom: '15px',
                   filter: 'drop-shadow(0 0 10px rgba(100, 255, 218, 0.3))'
                 }}></i>
                 <h3 style={{
-                  fontSize: '1.3rem',
+                  fontSize: 'clamp(1.1rem, 4vw, 1.3rem)',
                   marginBottom: '10px',
                   color: '#ccd6f6'
                 }}>
@@ -684,8 +917,9 @@ export default function SectorHeadDashboard() {
                     : `No ${statusFilters.find(f => f.id === activeFilter)?.label} issues found.`}
                 </h3>
                 <p style={{ 
-                  fontSize: '1rem',
-                  opacity: 0.8
+                  fontSize: 'clamp(0.9rem, 3vw, 1rem)',
+                  opacity: 0.8,
+                  lineHeight: 1.5
                 }}>
                   {activeFilter === "all" 
                     ? "When citizens report issues, they'll appear here." 
@@ -695,8 +929,8 @@ export default function SectorHeadDashboard() {
             ) : (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                gap: '25px',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                gap: '20px',
                 width: '100%'
               }}>
                 {filteredIssues.map((issue) => (
@@ -716,29 +950,36 @@ export default function SectorHeadDashboard() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '20px'
+              marginBottom: '20px',
+              flexDirection: 'column',
+              gap: '15px'
             }}>
               <h2 style={{
-                fontSize: '1.8rem',
+                fontSize: 'clamp(1.3rem, 5vw, 1.8rem)',
                 fontWeight: '600',
                 margin: 0,
-                color: '#ccd6f6'
+                color: '#ccd6f6',
+                textAlign: 'center',
+                width: '100%'
               }}>
                 Gathering Requests
               </h2>
               <button
                 onClick={() => setShowRequests(false)}
                 style={{
-                  padding: '8px 16px',
+                  padding: '10px 20px',
                   backgroundColor: '#64ffda',
                   color: '#0a192f',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '30px',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px'
+                  gap: '8px',
+                  fontSize: 'clamp(12px, 3vw, 14px)',
+                  minHeight: '44px',
+                  boxShadow: '0 2px 10px rgba(100, 255, 218, 0.3)'
                 }}
               >
                 <i className="fas fa-arrow-left"></i>
@@ -827,8 +1068,44 @@ export default function SectorHeadDashboard() {
           box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3) !important;
         }
         
+        /* Mobile menu button visibility */
+        .mobile-menu-btn {
+          display: none !important;
+        }
+        
+        .mobile-nav {
+          display: none !important;
+        }
+        
+        .desktop-nav {
+          display: flex !important;
+        }
+        
         /* Responsive adjustments */
+        @media (max-width: 1024px) {
+          .desktop-nav {
+            gap: 8px;
+          }
+          
+          .desktop-nav button {
+            padding: 8px 12px !important;
+            font-size: 13px !important;
+          }
+        }
+        
         @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: block !important;
+          }
+          
+          .desktop-nav {
+            display: none !important;
+          }
+          
+          .mobile-nav {
+            display: flex !important;
+          }
+          
           .navbar-buttons {
             flex-direction: column;
             align-items: flex-end;
@@ -836,6 +1113,76 @@ export default function SectorHeadDashboard() {
           
           .filter-buttons {
             justify-content: center;
+          }
+          
+          .filter-buttons button {
+            flex: 1 0 calc(50% - 8px) !important;
+            max-width: calc(50% - 8px) !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .filter-buttons button {
+            flex: 1 0 100% !important;
+            max-width: 100% !important;
+          }
+          
+          .mobile-nav div {
+            grid-template-columns: 1fr !important;
+          }
+          
+          .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+        
+        @media (max-width: 360px) {
+          .container {
+            padding: 10px !important;
+          }
+          
+          .card {
+            padding: 10px !important;
+          }
+          
+          .button-group {
+            flex-direction: column;
+          }
+          
+          .btn {
+            width: 100%;
+          }
+        }
+        
+        /* Touch device improvements */
+        @media (hover: none) {
+          .issue-card:hover {
+            transform: none;
+          }
+          
+          button:active {
+            transform: scale(0.98);
+          }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+          .card {
+            border: 2px solid #64ffda;
+          }
+          
+          button {
+            border: 2px solid currentColor;
+          }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
           }
         }
       `}</style>
