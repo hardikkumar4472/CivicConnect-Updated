@@ -23,7 +23,7 @@ const SectorHeadHeader = ({ sectorName, onShowDashboard }) => {
     setLoadingAnalytics(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://civicconnect-backend.onrender.com/api/sector-head/analytics", {
+      const response = await fetch("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/analytics", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await response.json();
