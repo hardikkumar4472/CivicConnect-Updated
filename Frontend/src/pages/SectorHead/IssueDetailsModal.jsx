@@ -41,7 +41,7 @@ const IssueDetailsModal = ({
         
         setLoadingCitizenDetails(true);
         const response = await axios.get(
-          `https://civicconnect-backend.onrender.com/sector-head/sector-citizens`,
+          `https://civic-connect-vercel-hosted.vercel.app/sector-head/sector-citizens`,
           { 
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -91,7 +91,7 @@ const IssueDetailsModal = ({
 
     // Make API call to update status
     const response = await axios.put(
-      `https://civicconnect-backend.onrender.com/api/issues/${selectedIssue._id}/status`,
+      `https://civic-connect-vercel-hosted.vercel.app/api/issues/${selectedIssue._id}/status`,
       { status: newStatus },
       {
         headers: {
@@ -137,7 +137,7 @@ const IssueDetailsModal = ({
       const token = localStorage.getItem("token");
       
       const response = await axios.post(
-        `https://civicconnect-backend.onrender.com/api/issues/${selectedIssue._id}/comment`,
+        `https://civic-connect-vercel-hosted.vercel.app/api/issues/${selectedIssue._id}/comment`,
         { text: comment },
         {
           headers: {
