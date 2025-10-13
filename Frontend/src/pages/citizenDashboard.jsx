@@ -9,7 +9,7 @@ import FeedbackModal from "./FeedbackModal";
 
 const backend_URL = import.meta.env.VITE_BACKEND_URL;
 
-function CitizenRequests({ requests, setRequests, onCreateRequest }) {
+function CitizenRequests({ requests, setRequests, onCreateRequest, isMobile }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,11 +35,11 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
     <>
       <style>{`
         .citizen-requests {
-          padding: 16px;
+          padding: ${isMobile ? '12px' : '16px'};
         }
 
         .citizen-requests h2 {
-          font-size: 20px;
+          font-size: ${isMobile ? '18px' : '20px'};
           font-weight: bold;
           margin-bottom: 12px;
         }
@@ -47,12 +47,14 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
         .empty-msg {
           color: gray;
           font-style: italic;
+          text-align: center;
+          padding: 20px;
         }
 
         .request-card {
           border: 1px solid #ddd;
           border-radius: 15px;
-          padding: 16px;
+          padding: ${isMobile ? '12px' : '16px'};
           margin-bottom: 12px;
           box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
           background: #112240;
@@ -61,21 +63,25 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
         .request-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
+          flex-direction: ${isMobile ? 'column' : 'row'};
+          gap: ${isMobile ? '8px' : '0'};
         }
 
         .request-header h3 {
           margin: 0;
           font-weight: bold;
-          font-size: 16px;
+          font-size: ${isMobile ? '14px' : '16px'};
+          flex: 1;
         }
 
         .status {
           padding: 4px 10px;
           border-radius: 12px;
-          font-size: 13px;
+          font-size: ${isMobile ? '12px' : '13px'};
           font-weight: bold;
           text-transform: capitalize;
+          white-space: nowrap;
         }
 
         .status-approved {
@@ -97,16 +103,18 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
           margin-top: 8px;
           color: #555;
           font-style: italic;
+          font-size: ${isMobile ? '12px' : '14px'};
         }
 
         .loading {
           text-align: center;
           color: gray;
+          padding: 20px;
         }
 
         .create-request-btn {
           margin-bottom: 20px;
-          padding: 10px 20px;
+          padding: ${isMobile ? '8px 16px' : '10px 20px'};
           background-color: #64ffda;
           color: #0a192f;
           border: none;
@@ -115,18 +123,25 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
           cursor: pointer;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
           transition: all 0.3s ease;
+          width: ${isMobile ? '100%' : 'auto'};
+          font-size: ${isMobile ? '14px' : '16px'};
         }
 
         .create-request-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 4px 8px rgba(100, 255, 218, 0.3);
         }
+
+        .request-card p {
+          margin: 4px 0;
+          font-size: ${isMobile ? '12px' : '14px'};
+        }
       `}</style>
 
       <div className="citizen-requests">
-        
         <button 
           className="create-request-btn"
           onClick={onCreateRequest}
@@ -166,7 +181,7 @@ function CitizenRequests({ requests, setRequests, onCreateRequest }) {
   );
 }
 
-function NewRequestModal({ onSubmit, onClose }) {
+function NewRequestModal({ onSubmit, onClose, isMobile }) {
   const [formData, setFormData] = useState({
     gatheringName: "",
     type: "Cultural",
@@ -245,16 +260,16 @@ function NewRequestModal({ onSubmit, onClose }) {
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 1000,
-      padding: '20px',
+      padding: isMobile ? '10px' : '20px',
       backdropFilter: 'blur(7px)'
     }}>
       <div style={{
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        padding: '30px',
-        borderRadius: '60px',
+        padding: isMobile ? '20px' : '30px',
+        borderRadius: isMobile ? '20px' : '60px',
         width: '100%',
-        maxWidth: '600px',
-        maxHeight: '100vh',
+        maxWidth: isMobile ? '95%' : '600px',
+        maxHeight: '90vh',
         overflowY: 'auto',
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
         border: '1px solid #233554'
@@ -270,7 +285,7 @@ function NewRequestModal({ onSubmit, onClose }) {
           <h2 style={{
             color: '#64ffda',
             margin: 0,
-            fontSize: '1.5rem'
+            fontSize: isMobile ? '1.2rem' : '1.5rem'
           }}>
             Create New Gathering Request
           </h2>
@@ -280,7 +295,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               background: 'transparent',
               border: 'none',
               color: '#ccd6f6',
-              fontSize: '1.5rem',
+              fontSize: isMobile ? '1.2rem' : '1.5rem',
               cursor: 'pointer',
               padding: '5px'
             }}
@@ -296,6 +311,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               marginBottom: '8px',
               color: '#ccd6f6',
               fontWeight: '500',
+              fontSize: isMobile ? '14px' : '16px'
             }}>
               Gathering Name *
             </label>
@@ -305,13 +321,13 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.gatheringName}
               onChange={handleChange}
               style={{
-                width: '90%',
-                padding: '12px',
+                width: isMobile ? '85%' : '90%',
+                padding: isMobile ? '10px' : '12px',
                 borderRadius: '30px',
                 border: errors.gatheringName ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
-                fontSize: '1rem',
+                fontSize: isMobile ? '14px' : '1rem',
                 outline: 'none',
                 transition: 'all 0.3s ease'
               }}
@@ -329,7 +345,8 @@ function NewRequestModal({ onSubmit, onClose }) {
               display: 'block',
               marginBottom: '8px',
               color: '#ccd6f6',
-              fontWeight: '500'
+              fontWeight: '500',
+              fontSize: isMobile ? '14px' : '16px'
             }}>
               Type *
             </label>
@@ -338,13 +355,13 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.type}
               onChange={handleChange}
               style={{
-                width: '95%',
-                padding: '12px',
+                width: isMobile ? '90%' : '95%',
+                padding: isMobile ? '10px' : '12px',
                 borderRadius: '40px',
                 border: '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
-                fontSize: '1rem',
+                fontSize: isMobile ? '14px' : '1rem',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -362,7 +379,8 @@ function NewRequestModal({ onSubmit, onClose }) {
               display: 'block',
               marginBottom: '8px',
               color: '#ccd6f6',
-              fontWeight: '500'
+              fontWeight: '500',
+              fontSize: isMobile ? '14px' : '16px'
             }}>
               Expected Number of People *
             </label>
@@ -373,13 +391,13 @@ function NewRequestModal({ onSubmit, onClose }) {
               onChange={handleChange}
               min="1"
               style={{
-                width: '91%',
-                padding: '12px',
+                width: isMobile ? '85%' : '91%',
+                padding: isMobile ? '10px' : '12px',
                 borderRadius: '40px',
                 border: errors.expectedPeople ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
-                fontSize: '1rem',
+                fontSize: isMobile ? '14px' : '1rem',
                 outline: 'none',
                 transition: 'all 0.3s ease'
               }}
@@ -397,7 +415,8 @@ function NewRequestModal({ onSubmit, onClose }) {
               display: 'block',
               marginBottom: '8px',
               color: '#ccd6f6',
-              fontWeight: '500'
+              fontWeight: '500',
+              fontSize: isMobile ? '14px' : '16px'
             }}>
               Date *
             </label>
@@ -407,13 +426,13 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.date}
               onChange={handleChange}
               style={{
-                width: '91%',
-                padding: '12px',
+                width: isMobile ? '85%' : '91%',
+                padding: isMobile ? '10px' : '12px',
                 borderRadius: '40px',
                 border: errors.date ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
-                fontSize: '1rem',
+                fontSize: isMobile ? '14px' : '1rem',
                 outline: 'none',
                 transition: 'all 0.3s ease'
               }}
@@ -430,7 +449,8 @@ function NewRequestModal({ onSubmit, onClose }) {
               display: 'block',
               marginBottom: '8px',
               color: '#ccd6f6',
-              fontWeight: '500'
+              fontWeight: '500',
+              fontSize: isMobile ? '14px' : '16px'
             }}>
               Location *
             </label>
@@ -440,13 +460,13 @@ function NewRequestModal({ onSubmit, onClose }) {
               value={formData.location}
               onChange={handleChange}
               style={{
-                width: '91%',
-                padding: '12px',
+                width: isMobile ? '85%' : '91%',
+                padding: isMobile ? '10px' : '12px',
                 borderRadius: '40px',
                 border: errors.location ? '2px solid #ff6b6b' : '1px solid #233554',
                 background: '#0a192f',
                 color: '#ccd6f6',
-                fontSize: '1rem',
+                fontSize: isMobile ? '14px' : '1rem',
                 outline: 'none',
                 transition: 'all 0.3s ease'
               }}
@@ -462,21 +482,24 @@ function NewRequestModal({ onSubmit, onClose }) {
           <div style={{
             display: 'flex',
             gap: '15px',
-            justifyContent: 'flex-end',
-            marginTop: '30px'
+            justifyContent: isMobile ? 'space-between' : 'flex-end',
+            marginTop: '30px',
+            flexDirection: isMobile ? 'column' : 'row'
           }}>
             <button
               type="button"
               onClick={onClose}
               style={{
-                padding: '10px 20px',
+                padding: isMobile ? '12px' : '10px 20px',
                 borderRadius: '40px',
                 border: '1px solid #233554',
                 background: 'transparent',
                 color: '#ccd6f6',
                 cursor: 'pointer',
                 fontWeight: '600',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                fontSize: isMobile ? '14px' : '16px',
+                width: isMobile ? '100%' : 'auto'
               }}
             >
               Cancel
@@ -485,7 +508,7 @@ function NewRequestModal({ onSubmit, onClose }) {
               type="submit"
               disabled={loading}
               style={{
-                padding: '10px 20px',
+                padding: isMobile ? '12px' : '10px 20px',
                 borderRadius: '40px',
                 border: 'none',
                 background: '#64ffda',
@@ -493,7 +516,9 @@ function NewRequestModal({ onSubmit, onClose }) {
                 cursor: 'pointer',
                 fontWeight: '600',
                 transition: 'all 0.3s ease',
-                opacity: loading ? 0.7 : 1
+                opacity: loading ? 0.7 : 1,
+                fontSize: isMobile ? '14px' : '16px',
+                width: isMobile ? '100%' : 'auto'
               }}
             >
               {loading ? (
@@ -531,7 +556,15 @@ export default function CitizenDashboard() {
   const [showRequests, setShowRequests] = useState(false);
   const [showNewRequestModal, setShowNewRequestModal] = useState(false);
   const [requests, setRequests] = useState([]);
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const navigate = useNavigate();
+
+  // Responsive breakpoints
+  const isMobile = windowSize.width <= 768;
+  const isTablet = windowSize.width > 768 && windowSize.width <= 1024;
 
   const statusFilters = [
     { id: "all", label: "All Issues" },
@@ -541,6 +574,18 @@ export default function CitizenDashboard() {
     { id: "escalated", label: "Escalated" },
     { id: "closed", label: "Closed" }
   ];
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fetchFeedbacks = async (token, issuesData) => {
     const closedIssues = issuesData.filter(issue => issue.status === "closed");
@@ -755,20 +800,29 @@ export default function CitizenDashboard() {
       <header
         style={{
           backgroundColor: "#112240",
-          padding: "20px",
+          padding: isMobile ? "15px" : "20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.2)"
+          boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "15px" : "0"
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+        <div style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: "15px",
+          justifyContent: isMobile ? "center" : "flex-start",
+          width: isMobile ? "100%" : "auto"
+        }}>
           <h1
             style={{
-              fontSize: "1.5rem",
+              fontSize: isMobile ? "1.2rem" : "1.5rem",
               fontWeight: "600",
               margin: 0,
-              color: "#64ffda"
+              color: "#64ffda",
+              textAlign: isMobile ? "center" : "left"
             }}
           >
             <i className="fas fa-user" style={{ marginRight: "10px" }}></i>
@@ -776,73 +830,92 @@ export default function CitizenDashboard() {
           </h1>
         </div>
 
-        <div style={{ display: "flex", gap: "15px" }}>
+        <div style={{ 
+          display: "flex", 
+          gap: "10px", 
+          flexWrap: "wrap",
+          justifyContent: isMobile ? "center" : "flex-end",
+          width: isMobile ? "100%" : "auto"
+        }}>
           <button
             onClick={() => setShowRequests(true)}
             style={{
-              padding: "8px 15px",
+              padding: isMobile ? "6px 12px" : "8px 15px",
               borderRadius: "100px",
               border: "none",
               background: "#64ffda",
               color: "#0a192f",
               cursor: "pointer",
               fontWeight: "600",
-              fontSize: "0.9rem",
+              fontSize: isMobile ? "0.8rem" : "0.9rem",
               transition: "all 0.3s ease",
               display: "flex",
               alignItems: "center",
-              gap: "8px"
+              gap: "6px",
+              flex: isMobile ? "1" : "none",
+              minWidth: isMobile ? "120px" : "auto",
+              justifyContent: "center"
             }}
           >
-            <i className="fas fa-calendar-check"></i> My Requests
+            <i className="fas fa-calendar-check"></i> 
+            {isMobile ? "Requests" : "My Requests"}
           </button>
 
           <button
             onClick={() => setShowNewIssueModal(true)}
             style={{
-              padding: "8px 15px",
+              padding: isMobile ? "6px 12px" : "8px 15px",
               borderRadius: "100px",
               border: "none",
               background: "#64ffda",
               color: "#0a192f",
               cursor: "pointer",
               fontWeight: "600",
-              fontSize: "0.9rem",
+              fontSize: isMobile ? "0.8rem" : "0.9rem",
               transition: "all 0.3s ease",
               display: "flex",
               alignItems: "center",
-              gap: "8px"
+              gap: "6px",
+              flex: isMobile ? "1" : "none",
+              minWidth: isMobile ? "120px" : "auto",
+              justifyContent: "center"
             }}
           >
-            <i className="fas fa-plus"></i> New Issue
+            <i className="fas fa-plus"></i> 
+            {isMobile ? "New Issue" : "New Issue"}
           </button>
 
           <button
             onClick={handleExportIssues}
             disabled={exporting}
             style={{
-              padding: "8px 15px",
+              padding: isMobile ? "6px 12px" : "8px 15px",
               borderRadius: "100px",
               border: "none",
               background: "#1e90ff",
               color: "#fff",
               cursor: "pointer",
               fontWeight: "600",
-              fontSize: "0.9rem",
+              fontSize: isMobile ? "0.8rem" : "0.9rem",
               transition: "all 0.3s ease",
               display: "flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "6px",
+              flex: isMobile ? "1" : "none",
+              minWidth: isMobile ? "120px" : "auto",
+              justifyContent: "center",
               opacity: exporting ? 0.7 : 1
             }}
           >
             {exporting ? (
               <>
-                <i className="fas fa-spinner fa-spin"></i> Exporting...
+                <i className="fas fa-spinner fa-spin"></i> 
+                {isMobile ? "..." : "Exporting..."}
               </>
             ) : (
               <>
-                <i className="fas fa-download"></i> Export Issues
+                <i className="fas fa-download"></i> 
+                {isMobile ? "Export" : "Export Issues"}
               </>
             )}
           </button>
@@ -850,21 +923,25 @@ export default function CitizenDashboard() {
           <button
             onClick={handleLogout}
             style={{
-              padding: "8px 15px",
+              padding: isMobile ? "6px 12px" : "8px 15px",
               borderRadius: "100px",
               border: "none",
               background: "#ff6b6b",
               color: "#fff",
               cursor: "pointer",
               fontWeight: "600",
-              fontSize: "0.9rem",
+              fontSize: isMobile ? "0.8rem" : "0.9rem",
               transition: "all 0.3s ease",
               display: "flex",
               alignItems: "center",
-              gap: "8px"
+              gap: "6px",
+              flex: isMobile ? "1" : "none",
+              minWidth: isMobile ? "120px" : "auto",
+              justifyContent: "center"
             }}
           >
-            <i className="fas fa-sign-out-alt"></i> Logout
+            <i className="fas fa-sign-out-alt"></i> 
+            {isMobile ? "Logout" : "Logout"}
           </button>
         </div>
       </header>
@@ -874,7 +951,7 @@ export default function CitizenDashboard() {
           flex: 1,
           width: "100%",
           overflowY: "auto",
-          padding: "20px",
+          padding: isMobile ? "15px" : "20px",
           boxSizing: "border-box"
         }}
       >
@@ -883,7 +960,7 @@ export default function CitizenDashboard() {
             style={{
               width: "100%",
               maxWidth: "100%",
-              padding: "0 20px",
+              padding: isMobile ? "0 10px" : "0 20px",
               boxSizing: "border-box"
             }}
           >
@@ -891,15 +968,16 @@ export default function CitizenDashboard() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: isMobile ? "flex-start" : "center",
                 marginBottom: "20px",
                 flexWrap: "wrap",
-                gap: "15px"
+                gap: "15px",
+                flexDirection: isMobile ? "column" : "row"
               }}
             >
               <h2
                 style={{
-                  fontSize: "1.5rem",
+                  fontSize: isMobile ? "1.3rem" : "1.5rem",
                   fontWeight: "600",
                   margin: 0,
                   display: "flex",
@@ -911,13 +989,19 @@ export default function CitizenDashboard() {
                 <i className="fas fa-exclamation-circle"></i> Your Reported Issues
               </h2>
 
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+              <div style={{ 
+                display: "flex", 
+                gap: "8px", 
+                flexWrap: "wrap",
+                justifyContent: isMobile ? "center" : "flex-end",
+                width: isMobile ? "100%" : "auto"
+              }}>
                 {statusFilters.map((filter) => (
                   <button
                     key={filter.id}
                     onClick={() => setActiveFilter(filter.id)}
                     style={{
-                      padding: "8px 15px",
+                      padding: isMobile ? "6px 12px" : "8px 15px",
                       borderRadius: "20px",
                       border: "none",
                       background:
@@ -926,14 +1010,17 @@ export default function CitizenDashboard() {
                         activeFilter === filter.id ? "#0a192f" : "#ccd6f6",
                       cursor: "pointer",
                       fontWeight: "600",
-                      fontSize: "0.8rem",
+                      fontSize: isMobile ? "0.7rem" : "0.8rem",
                       transition: "all 0.3s ease",
                       display: "flex",
                       alignItems: "center",
-                      gap: "5px"
+                      gap: "5px",
+                      flex: isMobile ? "1" : "none",
+                      minWidth: isMobile ? "80px" : "auto",
+                      justifyContent: "center"
                     }}
                   >
-                    {filter.label}
+                    {isMobile ? filter.label.split(' ')[0] : filter.label}
                   </button>
                 ))}
               </div>
@@ -953,12 +1040,12 @@ export default function CitizenDashboard() {
                 <i
                   className="fas fa-check-circle"
                   style={{
-                    fontSize: "3rem",
+                    fontSize: isMobile ? "2rem" : "3rem",
                     color: "#64ffda",
                     marginBottom: "15px"
                   }}
                 ></i>
-                <p style={{ fontSize: "1.1rem" }}>
+                <p style={{ fontSize: isMobile ? "1rem" : "1.1rem" }}>
                   {activeFilter === "all"
                     ? "You haven't reported any issues yet."
                     : `No ${
@@ -975,7 +1062,7 @@ export default function CitizenDashboard() {
                     color: "#0a192f",
                     cursor: "pointer",
                     fontWeight: "600",
-                    fontSize: "0.9rem",
+                    fontSize: isMobile ? "0.8rem" : "0.9rem",
                     transition: "all 0.3s ease",
                     marginTop: "15px",
                     display: "inline-flex",
@@ -990,8 +1077,8 @@ export default function CitizenDashboard() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                  gap: "20px",
+                  gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(auto-fill, minmax(280px, 1fr))" : "repeat(auto-fill, minmax(300px, 1fr))",
+                  gap: isMobile ? "15px" : "20px",
                   width: "100%"
                 }}
               >
@@ -1007,6 +1094,7 @@ export default function CitizenDashboard() {
                         : null
                     }
                     feedback={feedbacks[issue._id]}
+                    isMobile={isMobile}
                   />
                 ))}
               </div>
@@ -1018,20 +1106,23 @@ export default function CitizenDashboard() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '20px'
+              marginBottom: '20px',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '15px' : '0'
             }}>
               <h2 style={{
-                fontSize: '1.5rem',
+                fontSize: isMobile ? '1.3rem' : '1.5rem',
                 fontWeight: '600',
                 margin: 0,
-                color: '#ccd6f6'
+                color: '#ccd6f6',
+                textAlign: isMobile ? 'center' : 'left'
               }}>
                 My Gathering Requests
               </h2>
               <button
                 onClick={() => setShowRequests(false)}
                 style={{
-                  padding: '8px 16px',
+                  padding: isMobile ? '8px 16px' : '8px 16px',
                   backgroundColor: '#64ffda',
                   color: '#0a192f',
                   border: 'none',
@@ -1040,7 +1131,10 @@ export default function CitizenDashboard() {
                   fontWeight: 'bold',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '5px'
+                  gap: '5px',
+                  fontSize: isMobile ? '14px' : '16px',
+                  width: isMobile ? '100%' : 'auto',
+                  justifyContent: 'center'
                 }}
               >
                 <i className="fas fa-arrow-left"></i>
@@ -1050,7 +1144,8 @@ export default function CitizenDashboard() {
             <CitizenRequests 
               requests={requests}
               setRequests={setRequests}
-              onCreateRequest={() => setShowNewRequestModal(true)} 
+              onCreateRequest={() => setShowNewRequestModal(true)}
+              isMobile={isMobile}
             />
           </div>
         )}
@@ -1060,6 +1155,7 @@ export default function CitizenDashboard() {
         <NewIssueModal
           onSubmit={handleCreateNewIssue}
           onClose={() => setShowNewIssueModal(false)}
+          isMobile={isMobile}
         />
       )}
 
@@ -1067,6 +1163,7 @@ export default function CitizenDashboard() {
         <NewRequestModal
           onSubmit={handleCreateNewRequest}
           onClose={() => setShowNewRequestModal(false)}
+          isMobile={isMobile}
         />
       )}
 
@@ -1076,6 +1173,7 @@ export default function CitizenDashboard() {
           onClose={closeModal}
           isCitizenView={true}
           feedback={feedbacks[selectedIssue._id]}
+          isMobile={isMobile}
         />
       )}
 
@@ -1090,6 +1188,7 @@ export default function CitizenDashboard() {
             setShowFeedbackModal(false);
             setIssueToFeedback(null);
           }}
+          isMobile={isMobile}
         />
       )}
 
@@ -1114,6 +1213,32 @@ export default function CitizenDashboard() {
         .issue-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 6px 8px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+          .header-buttons {
+            width: 100%;
+            justify-content: center;
+          }
+          
+          .filter-buttons {
+            width: 100%;
+            justify-content: center;
+          }
+          
+          .modal-content {
+            width: 95% !important;
+            margin: 10px !important;
+            padding: 15px !important;
+          }
+        }
+
+        /* Tablet-specific styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .grid-container {
+            grid-template-columns: repeat(2, 1fr);
+          }
         }
       `}</style>
     </div>
