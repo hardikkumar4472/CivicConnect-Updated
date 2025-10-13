@@ -50,7 +50,7 @@ function Home() {
     }));
 
     try {
-      const url = `https://civicconnect-backend.onrender.com${endpoint}`;
+      const url = `https://civic-connect-vercel-hosted.vercel.app${endpoint}`;
       const res = await axios.post(url, {
         email: loginData[role].email,
         password: loginData[role].password
