@@ -16,7 +16,7 @@ function SectorRequests() {
   const fetchRequests = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://civicconnect-backend.onrender.com/api/sector-head/gathering-request", {
+      const res = await axios.get("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/gathering-request", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(res.data.requests || []);
@@ -35,7 +35,7 @@ function SectorRequests() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://civicconnect-backend.onrender.com/api/sector-head/gathering/${id}/status`,
+        `https://civic-connect-vercel-hosted.vercel.app/api/sector-head/gathering/${id}/status`,
         { status, remarks: status === "approved" ? "Approved ✅" : "Rejected ❌" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -246,13 +246,13 @@ export default function SectorHeadDashboard() {
         }
         
         const [sectorRes, issuesRes, summaryRes] = await Promise.all([
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/me", {
+          axios.get("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/me", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/issues", {
+          axios.get("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/issues", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get("https://civicconnect-backend.onrender.com/api/sector-head/dashboard-summary", {
+          axios.get("https://civic-connect-vercel-hosted.vercel.app/api/sector-head/dashboard-summary", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
@@ -295,7 +295,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://civicconnect-backend.onrender.com/api/sector-head/analytics",
+        "https://civic-connect-vercel-hosted.vercel.app/api/sector-head/analytics",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAnalytics(response.data);
@@ -316,7 +316,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `https://civicconnect-backend.onrender.com/api/sector-head/citizen/${issue.raisedBy}`,
+        `https://civic-connect-vercel-hosted.vercel.app/api/sector-head/citizen/${issue.raisedBy}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -346,7 +346,7 @@ export default function SectorHeadDashboard() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `https://civicconnect-backend.onrender.com/api/issues/${issueId}/status`,
+        `https://civic-connect-vercel-hosted.vercel.app/api/issues/${issueId}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
