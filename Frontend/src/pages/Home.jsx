@@ -12,7 +12,9 @@ function Home() {
   const [backgroundImage, setBackgroundImage] = useState("");
   const [showCredentials, setShowCredentials] = useState(false);
   const [showHowToUse, setShowHowToUse] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
+  
   const municipalImages = [
     "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
     "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b",
@@ -21,13 +23,23 @@ function Home() {
   ];
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    
     const randomImage = municipalImages[Math.floor(Math.random() * municipalImages.length)];
     setBackgroundImage(randomImage);
+    
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const [loginData, setLoginData] = useState({
@@ -126,10 +138,9 @@ function Home() {
 
   return (
     <div style={{ ...styles.appContainer, backgroundImage: `url(${backgroundImage})` }}>
-      {}
       <div style={styles.darkOverlay}></div>
       
-      {}
+      {/* Credentials Modal */}
       {showCredentials && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalContent}>
@@ -167,7 +178,7 @@ function Home() {
               </div>
               <div style={styles.credentialCard}>
                 <h3 style={styles.credentialTitle}>Admin</h3>
-                <p style={styles.credentialText}>Email: civicconnect pvt@gmail.com</p>
+                <p style={styles.credentialText}>Email: civicconnectpvt@gmail.com</p>
                 <p style={styles.credentialText}>Password: Ha@010190</p>
                 <button 
                   style={styles.fillButton}
@@ -181,7 +192,7 @@ function Home() {
         </div>
       )}
 
-      {}
+      {/* How to Use Modal */}
       {showHowToUse && (
         <div style={styles.modalOverlay}>
           <div style={styles.howToUseModal}>
@@ -253,71 +264,76 @@ function Home() {
         </div>
       )}
 
-      {}
-      <div style={styles.utilityButtons}>
+      {/* Utility Buttons */}
+      <div style={isMobile ? styles.utilityButtonsMobile : styles.utilityButtons}>
         <button 
-          style={styles.utilityButton}
+          style={isMobile ? styles.utilityButtonMobile : styles.utilityButton}
           onClick={() => setShowCredentials(true)}
         >
           <i className="fas fa-key" style={styles.utilityIcon}></i>
-          Login Credentials
+          {!isMobile && "Login Credentials"}
         </button>
         <button 
-          style={styles.utilityButton}
+          style={isMobile ? styles.utilityButtonMobile : styles.utilityButton}
           onClick={() => setShowHowToUse(true)}
         >
           <i className="fas fa-book" style={styles.utilityIcon}></i>
-          How to Use
+          {!isMobile && "How to Use"}
         </button>
       </div>
 
-      {}
+      {/* Main Content */}
       <div style={styles.fullScreenContent}>
-        {}
-        <header style={styles.header}>
+        {/* Header */}
+        <header style={isMobile ? styles.headerMobile : styles.header}>
           <img
             src="https://thumbs2.imgbox.com/d8/c3/F2FTK2fb_t.png"
             alt="CivicConnect Logo"
-            style={styles.headerLogo}
+            style={isMobile ? styles.headerLogoMobile : styles.headerLogo}
           />
-          <h1 style={styles.headerTitle}>Municipal Services Portal</h1>
+          <h1 style={isMobile ? styles.headerTitleMobile : styles.headerTitle}>
+            Municipal Services Portal
+          </h1>
         </header>
 
-        {}
-        <div style={styles.roleSelector}>
+        {/* Role Selector */}
+        <div style={isMobile ? styles.roleSelectorMobile : styles.roleSelector}>
           <button 
             onClick={() => setSelectedRole("citizen")}
             style={{
-              ...styles.roleButton,
+              ...(isMobile ? styles.roleButtonMobile : styles.roleButton),
               ...(selectedRole === "citizen" && styles.activeRoleButton)
             }}
           >
-            <i className="fas fa-user" style={styles.roleIcon}></i> Citizen
+            <i className="fas fa-user" style={styles.roleIcon}></i> 
+            {isMobile ? "Citizen" : "Citizen"}
           </button>
           <button 
             onClick={() => setSelectedRole("sectorHead")}
             style={{
-              ...styles.roleButton,
+              ...(isMobile ? styles.roleButtonMobile : styles.roleButton),
               ...(selectedRole === "sectorHead" && styles.activeRoleButton)
             }}
           >
-            <i className="fas fa-user-tie" style={styles.roleIcon}></i> Sector Head
+            <i className="fas fa-user-tie" style={styles.roleIcon}></i> 
+            {isMobile ? "Sector Head" : "Sector Head"}
           </button>
           <button 
             onClick={() => setSelectedRole("admin")}
             style={{
-              ...styles.roleButton,
+              ...(isMobile ? styles.roleButtonMobile : styles.roleButton),
               ...(selectedRole === "admin" && styles.activeRoleButton)
             }}
           >
-            <i className="fas fa-user-shield" style={styles.roleIcon}></i> Admin
+            <i className="fas fa-user-shield" style={styles.roleIcon}></i> 
+            {isMobile ? "Admin" : "Admin"}
           </button>
         </div>
 
-        {}
-        <div style={styles.formContainer}>
+        {/* Login Form */}
+        <div style={isMobile ? styles.formContainerMobile : styles.formContainer}>
           {selectedRole === "admin" && (
-            <form onSubmit={(e) => handleLogin("admin", e)} style={styles.loginForm}>
+            <form onSubmit={(e) => handleLogin("admin", e)} style={isMobile ? styles.loginFormMobile : styles.loginForm}>
               <div style={styles.inputGroup}>
                 <label style={styles.inputLabel}>
                   <i className="fas fa-envelope" style={styles.labelIcon}></i> Email
@@ -330,7 +346,7 @@ function Home() {
                     admin: { ...prev.admin, email: e.target.value }
                   }))}
                   placeholder="admin@gmail.com"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
@@ -347,16 +363,20 @@ function Home() {
                     admin: { ...prev.admin, password: e.target.value }
                   }))}
                   placeholder="••••••••"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
 
-              {loginData.admin.error && <div style={styles.errorMessage}>{loginData.admin.error}</div>}
+              {loginData.admin.error && (
+                <div style={isMobile ? styles.errorMessageMobile : styles.errorMessage}>
+                  {loginData.admin.error}
+                </div>
+              )}
 
               <button 
                 type="submit" 
-                style={styles.loginButton} 
+                style={isMobile ? styles.loginButtonMobile : styles.loginButton} 
                 disabled={loginData.admin.isLoading}
               >
                 {loginData.admin.isLoading ? (
@@ -372,7 +392,7 @@ function Home() {
           )}
 
           {selectedRole === "citizen" && (
-            <form onSubmit={(e) => handleLogin("citizen", e)} style={styles.loginForm}>
+            <form onSubmit={(e) => handleLogin("citizen", e)} style={isMobile ? styles.loginFormMobile : styles.loginForm}>
               <div style={styles.inputGroup}>
                 <label style={styles.inputLabel}>
                   <i className="fas fa-envelope" style={styles.labelIcon}></i> Email
@@ -385,7 +405,7 @@ function Home() {
                     citizen: { ...prev.citizen, email: e.target.value }
                   }))}
                   placeholder="citizen@gmail.com"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
@@ -402,16 +422,20 @@ function Home() {
                     citizen: { ...prev.citizen, password: e.target.value }
                   }))}
                   placeholder="••••••••"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
 
-              {loginData.citizen.error && <div style={styles.errorMessage}>{loginData.citizen.error}</div>}
+              {loginData.citizen.error && (
+                <div style={isMobile ? styles.errorMessageMobile : styles.errorMessage}>
+                  {loginData.citizen.error}
+                </div>
+              )}
 
               <button 
                 type="submit" 
-                style={styles.loginButton} 
+                style={isMobile ? styles.loginButtonMobile : styles.loginButton} 
                 disabled={loginData.citizen.isLoading}
               >
                 {loginData.citizen.isLoading ? (
@@ -427,7 +451,7 @@ function Home() {
           )}
 
           {selectedRole === "sectorHead" && (
-            <form onSubmit={(e) => handleLogin("sectorHead", e)} style={styles.loginForm}>
+            <form onSubmit={(e) => handleLogin("sectorHead", e)} style={isMobile ? styles.loginFormMobile : styles.loginForm}>
               <div style={styles.inputGroup}>
                 <label style={styles.inputLabel}>
                   <i className="fas fa-envelope" style={styles.labelIcon}></i> Email
@@ -440,7 +464,7 @@ function Home() {
                     sectorHead: { ...prev.sectorHead, email: e.target.value }
                   }))}
                   placeholder="sector@gmail.com"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
@@ -457,16 +481,20 @@ function Home() {
                     sectorHead: { ...prev.sectorHead, password: e.target.value }
                   }))}
                   placeholder="••••••••"
-                  style={styles.inputField}
+                  style={isMobile ? styles.inputFieldMobile : styles.inputField}
                   required
                 />
               </div>
 
-              {loginData.sectorHead.error && <div style={styles.errorMessage}>{loginData.sectorHead.error}</div>}
+              {loginData.sectorHead.error && (
+                <div style={isMobile ? styles.errorMessageMobile : styles.errorMessage}>
+                  {loginData.sectorHead.error}
+                </div>
+              )}
 
               <button 
                 type="submit" 
-                style={styles.loginButton} 
+                style={isMobile ? styles.loginButtonMobile : styles.loginButton} 
                 disabled={loginData.sectorHead.isLoading}
               >
                 {loginData.sectorHead.isLoading ? (
@@ -482,21 +510,26 @@ function Home() {
           )}
         </div>
 
-        {}
-        <footer style={styles.footer}>
-          <div style={styles.loginFooter}>
-            <Link to="/forgot-password" style={styles.forgotPassword}>Forgot Password?</Link>
-            <div style={styles.secureLogin}>
-              <i className="fas fa-shield-alt" style={styles.shieldIcon}></i> Secure Municipal Portal
+        {/* Footer */}
+        <footer style={isMobile ? styles.footerMobile : styles.footer}>
+          <div style={isMobile ? styles.loginFooterMobile : styles.loginFooter}>
+            <Link to="/forgot-password" style={isMobile ? styles.forgotPasswordMobile : styles.forgotPassword}>
+              Forgot Password?
+            </Link>
+            <div style={isMobile ? styles.secureLoginMobile : styles.secureLogin}>
+              <i className="fas fa-shield-alt" style={styles.shieldIcon}></i> 
+              {!isMobile && "Secure Municipal Portal"}
             </div>
           </div>
-          <p style={styles.footerText}>© {new Date().getFullYear()} CivicConnect</p>
+          <p style={isMobile ? styles.footerTextMobile : styles.footerText}>
+            © {new Date().getFullYear()} CivicConnect
+          </p>
         </footer>
       </div>
 
       <ToastContainer position="top-center" autoClose={5000} />
 
-      {}
+      {/* Global Styles */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
@@ -579,12 +612,38 @@ function Home() {
           transition: transform 0.3s ease;
           filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.8)) !important;
         }
+
+        /* Responsive media queries */
+        @media (max-width: 480px) {
+          .modal-content {
+            width: 95% !important;
+            margin: 10px !important;
+            padding: 15px !important;
+          }
+          
+          .credentials-container {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 320px) {
+          .role-buttons {
+            flex-direction: column !important;
+            align-items: center !important;
+          }
+          
+          .utility-buttons {
+            top: 10px !important;
+            right: 10px !important;
+          }
+        }
       `}</style>
     </div>
   );
 }
 
 const styles = {
+  // Loading Screen
   loadingScreen: {
     position: 'fixed',
     top: 0,
@@ -631,6 +690,8 @@ const styles = {
     opacity: 0.8,
     animation: 'fadeInOut 2s infinite',
   },
+
+  // Main Container
   appContainer: {
     position: 'fixed',
     top: 0,
@@ -639,8 +700,9 @@ const styles = {
     bottom: 0,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     fontFamily: "'Poppins', sans-serif",
-    overflow: 'hidden',
+    overflow: 'auto',
   },
   darkOverlay: {
     position: 'fixed',
@@ -651,22 +713,22 @@ const styles = {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     zIndex: 0,
   },
-  fullScreenContent: {
-    position: 'relative',
-    zIndex: 1,
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: '20px',
-    boxSizing: 'border-box',
-  },
+
+  // Utility Buttons
   utilityButtons: {
     position: 'fixed',
     top: '20px',
     right: '20px',
     display: 'flex',
     gap: '10px',
+    zIndex: 1000,
+  },
+  utilityButtonsMobile: {
+    position: 'fixed',
+    top: '10px',
+    right: '10px',
+    display: 'flex',
+    gap: '5px',
     zIndex: 1000,
   },
   utilityButton: {
@@ -685,9 +747,350 @@ const styles = {
     backdropFilter: 'blur(10px)',
     zIndex: 1001,
   },
+  utilityButtonMobile: {
+    padding: '8px 12px',
+    backgroundColor: 'rgba(79, 195, 247, 0.9)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '20px',
+    fontSize: '0.7rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+    backdropFilter: 'blur(10px)',
+    zIndex: 1001,
+  },
   utilityIcon: {
     fontSize: '0.8rem',
   },
+
+  // Full Screen Content
+  fullScreenContent: {
+    position: 'relative',
+    zIndex: 1,
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: '20px',
+    boxSizing: 'border-box',
+  },
+
+  // Header
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '10px 0',
+    animation: 'fadeIn 0.8s ease',
+    marginBottom: '20px',
+  },
+  headerMobile: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '5px 0',
+    animation: 'fadeIn 0.8s ease',
+    marginBottom: '15px',
+    marginTop: '40px',
+  },
+  headerLogo: {
+    width: '80px',
+    height: '80px',
+    objectFit: 'contain',
+    marginBottom: '10px',
+    borderRadius: '10px',
+    filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.7))',
+  },
+  headerLogoMobile: {
+    width: '60px',
+    height: '60px',
+    objectFit: 'contain',
+    marginBottom: '8px',
+    borderRadius: '8px',
+    filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.7))',
+  },
+  headerTitle: {
+    color: '#fff',
+    fontSize: '1.8rem',
+    fontWeight: '600',
+    textAlign: 'center',
+    margin: 0,
+    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+  },
+  headerTitleMobile: {
+    color: '#fff',
+    fontSize: '1.4rem',
+    fontWeight: '600',
+    textAlign: 'center',
+    margin: 0,
+    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+    padding: '0 10px',
+  },
+
+  // Role Selector
+  roleSelector: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',
+    margin: '10px 0',
+    flexWrap: 'wrap',
+  },
+  roleSelectorMobile: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '8px',
+    margin: '8px 0',
+    flexWrap: 'wrap',
+    padding: '0 10px',
+  },
+  roleButton: {
+    padding: '10px 15px',
+    backgroundColor: 'rgba(12, 12, 12, 0)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '40px',
+    fontSize: '0.9rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    backdropFilter: 'blur(30px)',
+  },
+  roleButtonMobile: {
+    padding: '8px 12px',
+    backgroundColor: 'rgba(12, 12, 12, 0)',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '30px',
+    fontSize: '0.8rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 3px 5px rgba(0,0,0,0.1)',
+    backdropFilter: 'blur(30px)',
+  },
+  activeRoleButton: {
+    backgroundColor: 'rgba(79, 195, 247, 0.8)',
+    boxShadow: '0 0 0 2px rgba(255,255,255,0.2)',
+  },
+  roleIcon: {
+    fontSize: '0.9rem',
+  },
+
+  // Form Container
+  formContainer: {
+    backgroundColor: 'rgba(19, 28, 46, 0)',
+    borderRadius: '50px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+    backdropFilter: 'blur(5px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    margin: '5px auto',
+    paddingTop: '50px',
+    paddingLeft: '10px',
+    animation: 'fadeIn 0.8s ease',
+    width: '100%',
+    maxWidth: '450px',
+    height: '100%',
+    maxHeight: '300px',
+  },
+  formContainerMobile: {
+    backgroundColor: 'rgba(19, 28, 46, 0)',
+    borderRadius: '30px',
+    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)',
+    backdropFilter: 'blur(5px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    margin: '5px auto',
+    padding: '30px 15px',
+    animation: 'fadeIn 0.8s ease',
+    width: '90%',
+    maxWidth: '350px',
+    minHeight: '280px',
+  },
+
+  // Login Form
+  loginForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px',
+  },
+  loginFormMobile: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+  inputGroup: {
+    position: 'relative',
+  },
+  inputLabel: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '8px',
+    fontSize: '0.9rem',
+    color: 'rgba(255, 255, 255, 0.8)',
+  },
+  labelIcon: {
+    color: '#4fc3f7',
+    fontSize: '0.9rem',
+  },
+  inputField: {
+    width: '86%',
+    padding: '12px 12px 12px 40px',
+    background: 'rgba(33, 31, 31, 0.56)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '60px',
+    color: 'white',
+    fontSize: '0.8rem',
+    transition: 'all 0.3s ease',
+  },
+  inputFieldMobile: {
+    width: '85%',
+    padding: '10px 12px 10px 40px',
+    background: 'rgba(33, 31, 31, 0.56)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: '50px',
+    color: 'white',
+    fontSize: '0.8rem',
+    transition: 'all 0.3s ease',
+  },
+  errorMessage: {
+    color: '#ff6b6b',
+    fontSize: '0.9rem',
+    textAlign: 'center',
+    marginTop: '-200px',
+    marginBottom: '160px',
+  },
+  errorMessageMobile: {
+    color: '#ff6b6b',
+    fontSize: '0.8rem',
+    textAlign: 'center',
+    marginTop: '5px',
+    marginBottom: '10px',
+  },
+  loginButton: {
+    padding: '12px',
+    background: 'linear-gradient(135deg, #4fc3f7, #1976d2)',
+    border: 'none',
+    borderRadius: '30px',
+    color: 'white',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '5px',
+    position: 'relative',
+    overflow: 'hidden',
+    zIndex: 1,
+    transition: 'all 0.3s ease',
+    width: '30%',
+    marginLeft: '145px'
+  },
+  loginButtonMobile: {
+    padding: '12px',
+    background: 'linear-gradient(135deg, #4fc3f7, #1976d2)',
+    border: 'none',
+    borderRadius: '25px',
+    color: 'white',
+    fontSize: '0.9rem',
+    fontWeight: '600',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '5px',
+    position: 'relative',
+    overflow: 'hidden',
+    zIndex: 1,
+    transition: 'all 0.3s ease',
+    width: '50%',
+    margin: '0 auto',
+  },
+  buttonLoader: {
+    width: '18px',
+    height: '18px',
+    border: '3px solid rgba(255, 255, 255, 0.3)',
+    borderRadius: '50%',
+    borderTopColor: 'white',
+    animation: 'spin 1s ease-in-out infinite',
+  },
+  arrowIcon: {
+    transition: 'transform 0.3s ease',
+  },
+
+  // Footer
+  footer: {
+    textAlign: 'center',
+    padding: '10px 0',
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: '0.8rem',
+  },
+  footerMobile: {
+    textAlign: 'center',
+    padding: '15px 0',
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: '0.7rem',
+    marginTop: '20px',
+  },
+  loginFooter: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '20px',
+    fontSize: '0.8rem',
+  },
+  loginFooterMobile: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '15px',
+    fontSize: '0.7rem',
+    padding: '0 10px',
+  },
+  forgotPassword: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    textDecoration: 'none',
+    transition: 'color 0.3s ease',
+  },
+  forgotPasswordMobile: {
+    color: 'rgba(255, 255, 255, 0.6)',
+    textDecoration: 'none',
+    transition: 'color 0.3s ease',
+    fontSize: '0.7rem',
+  },
+  secureLogin: {
+    color: 'rgba(255, 255, 255, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+  },
+  secureLoginMobile: {
+    color: 'rgba(255, 255, 255, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '3px',
+    fontSize: '0.7rem',
+  },
+  shieldIcon: {
+    color: '#4fc3f7',
+  },
+  footerText: {
+    margin: 0,
+  },
+  footerTextMobile: {
+    margin: '5px 0 0 0',
+  },
+
+  // Modal Styles
   modalOverlay: {
     position: 'fixed',
     top: 0,
@@ -700,6 +1103,8 @@ const styles = {
     alignItems: 'center',
     zIndex: 2000,
     backdropFilter: 'blur(5px)',
+    padding: '10px',
+    boxSizing: 'border-box',
   },
   modalContent: {
     backgroundColor: 'rgba(19, 28, 46, 0.95)',
@@ -775,6 +1180,7 @@ const styles = {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: '0.9rem',
     margin: '5px 0',
+    wordBreak: 'break-word',
   },
   fillButton: {
     backgroundColor: 'rgba(79, 195, 247, 0.8)',
@@ -825,178 +1231,6 @@ const styles = {
   },
   featureList: {
     paddingLeft: '20px',
-    margin: 0,
-  },
-  // featureList li: {
-  //   marginBottom: '8px',
-  //   fontSize: '0.9rem',
-  //   lineHeight: '1.5',
-  //   color: 'rgba(255, 255, 255, 0.8)',
-  // },
-  header: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '10px 0',
-    animation: 'fadeIn 0.8s ease',
-    marginBottom: '20px',
-  },
-  headerLogo: {
-    width: '80px',
-    height: '80px',
-    objectFit: 'contain',
-    marginBottom: '10px',
-    borderRadius: '10px',
-    filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.7))',
-  },
-  headerTitle: {
-    color: '#fff',
-    fontSize: '1.8rem',
-    fontWeight: '600',
-    textAlign: 'center',
-    margin: 0,
-    textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-  },
-  roleSelector: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '10px',
-    margin: '10px 0',
-    flexWrap: 'wrap',
-  },
-  roleButton: {
-    padding: '10px 15px',
-    backgroundColor: 'rgba(12, 12, 12, 0)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '40px',
-    fontSize: '0.9rem',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '5px',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-    backdropFilter: 'blur(30px)',
-  },
-  activeRoleButton: {
-    backgroundColor: 'rgba(79, 195, 247, 0.8)',
-    boxShadow: '0 0 0 2px rgba(255,255,255,0.2)',
-  },
-  roleIcon: {
-    fontSize: '0.9rem',
-  },
-  formContainer: {
-    backgroundColor: 'rgba(19, 28, 46, 0)',
-    borderRadius: '50px',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-    backdropFilter: 'blur(5px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    margin: '5px auto',
-    paddingTop: '50px',
-    paddingLeft: '10px',
-    animation: 'fadeIn 0.8s ease',
-    width: '100%',
-    maxWidth: '450px',
-    height: '100%',
-    maxHeight: '300px',
-  },
-  loginForm: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '30px',
-  },
-  inputGroup: {
-    position: 'relative',
-  },
-  inputLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '8px',
-    fontSize: '0.9rem',
-    color: 'rgba(255, 255, 255, 0.8)',
-  },
-  labelIcon: {
-    color: '#4fc3f7',
-    fontSize: '0.9rem',
-  },
-  inputField: {
-    width: '86%',
-    padding: '12px 12px 12px 40px',
-    background: 'rgba(33, 31, 31, 0.56)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '60px',
-    color: 'white',
-    fontSize: '0.8rem',
-    transition: 'all 0.3s ease',
-  },
-  errorMessage: {
-    color: '#ff6b6b',
-    fontSize: '0.9rem',
-    textAlign: 'center',
-    marginTop: '-200px',
-    marginBottom: '160px',
-  },
-  loginButton: {
-    padding: '12px',
-    background: 'linear-gradient(135deg, #4fc3f7, #1976d2)',
-    border: 'none',
-    borderRadius: '30px',
-    color: 'white',
-    fontSize: '0.9rem',
-    fontWeight: '600',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '5px',
-    position: 'relative',
-    overflow: 'hidden',
-    zIndex: 1,
-    transition: 'all 0.3s ease',
-    width: '30%',
-    marginLeft: '145px'
-  },
-  buttonLoader: {
-    width: '18px',
-    height: '18px',
-    border: '3px solid rgba(255, 255, 255, 0.3)',
-    borderRadius: '50%',
-    borderTopColor: 'white',
-    animation: 'spin 1s ease-in-out infinite',
-  },
-  arrowIcon: {
-    transition: 'transform 0.3s ease',
-  },
-  loginFooter: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '20px',
-    fontSize: '0.8rem',
-  },
-  forgotPassword: {
-    color: 'rgba(255, 255, 255, 0.6)',
-    textDecoration: 'none',
-    transition: 'color 0.3s ease',
-  },
-  secureLogin: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '5px',
-  },
-  shieldIcon: {
-    color: '#4fc3f7',
-  },
-  footer: {
-    textAlign: 'center',
-    padding: '10px 0',
-    color: 'rgba(255,255,255,0.6)',
-    fontSize: '0.8rem',
-  },
-  footerText: {
     margin: 0,
   },
 };
