@@ -61,7 +61,7 @@ const ResetPassword = () => {
     
     try {
       const response = await axios.post(
-        `https://civicconnect-backend.onrender.com/api/citizen/reset-password/${token}`,
+        `https://civic-connect-vercel-hosted.vercel.app/api/citizen/reset-password/${token}`,
         { password: formData.password }
       );
       
