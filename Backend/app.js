@@ -31,7 +31,7 @@ app.use(cors({
   credentials: true,
 }));
 
-
+//ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/sector-head', sectorHeadRoutes);
 app.use('/api/citizen', citizenRoutes);
