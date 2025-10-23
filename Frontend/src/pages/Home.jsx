@@ -197,7 +197,7 @@ function Home() {
         <div style={styles.modalOverlay}>
           <div style={styles.howToUseModal}>
             <div style={styles.modalHeader}>
-              <h2 style={styles.modalTitle}>How to Use CivicConnect</h2>
+              <h2 style={styles.modalTitle}>About CivicConnect</h2>
               <button 
                 style={styles.closeButton}
                 onClick={() => setShowHowToUse(false)}
