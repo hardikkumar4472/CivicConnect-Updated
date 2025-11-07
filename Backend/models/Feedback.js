@@ -28,3 +28,5 @@ const feedbackSchema = new mongoose.Schema({
 feedbackSchema.index({ citizen: 1, issue: 1 }, { unique: true });
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 export default Feedback;
+
+//Feedback Schema
