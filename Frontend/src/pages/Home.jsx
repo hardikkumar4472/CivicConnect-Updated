@@ -4,6 +4,9 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// ✅ SOCKET.IO FRONTEND IMPORT
+import { socket } from "../socket";
+
 const backend_URL = import.meta.env.VITE_BACKEND_URL;
 
 function Home() {
@@ -41,6 +44,24 @@ function Home() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // ✅ SOCKET.IO SETUP – ADDED
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("🔌 Connected to WebSocket:", socket.id);
+      socket.emit("ping", "Hello from Home Page!");
+    });
+
+    socket.on("pong", (msg) => {
+      console.log("📡 Server replied:", msg);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("pong");
+    };
+  }, []);
+  // ✅ END SOCKET.IO
 
   const [loginData, setLoginData] = useState({
     admin: { email: "", password: "", error: "", isLoading: false },
