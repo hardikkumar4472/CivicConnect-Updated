@@ -299,7 +299,7 @@ function Home() {
           onClick={() => setShowHowToUse(true)}
         >
           <i className="fas fa-book" style={styles.utilityIcon}></i>
-          {!isMobile && "How to Use"}
+          {!isMobile && "About"}
         </button>
       </div>
 
