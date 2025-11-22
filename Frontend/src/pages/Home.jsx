@@ -310,7 +310,7 @@ function Home() {
               
               <div style={styles.socialLinks}>
                 <a 
-                  href="https://linkedin.com/in/your-linkedin" 
+                  href="https://linkedin.com/in/hardik-kumar-63a4b3249" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={styles.socialLink}
@@ -320,7 +320,7 @@ function Home() {
                 </a>
                 
                 <a 
-                  href="https://github.com/your-github" 
+                  href="https://github.com/hardikkumar4472/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={styles.socialLink}
@@ -330,7 +330,7 @@ function Home() {
                 </a>
                 
                 <a 
-                  href="https://instagram.com/your-instagram" 
+                  href="https://www.instagram.com/i_m_hrdk_/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={styles.socialLink}
@@ -343,7 +343,7 @@ function Home() {
               <div style={styles.developerMessage}>
                 <p style={styles.messageText}>
                   "Building solutions that make a difference in people's lives. 
-                  CivicConnect is my contribution towards creating smarter, more efficient cities."
+                  CivicConnect is my contribution towards creating smarter, more efficient smart cities."
                 </p>
               </div>
 
