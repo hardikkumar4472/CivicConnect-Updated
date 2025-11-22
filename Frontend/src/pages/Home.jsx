@@ -15,6 +15,7 @@ function Home() {
   const [backgroundImage, setBackgroundImage] = useState("");
   const [showCredentials, setShowCredentials] = useState(false);
   const [showHowToUse, setShowHowToUse] = useState(false);
+  const [showDeveloper, setShowDeveloper] = useState(false); // New state for developer modal
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   
@@ -285,6 +286,82 @@ function Home() {
         </div>
       )}
 
+      {/* Developer Modal */}
+      {showDeveloper && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.developerModal}>
+            <div style={styles.modalHeader}>
+              <h2 style={styles.modalTitle}>About Developer</h2>
+              <button 
+                style={styles.closeButton}
+                onClick={() => setShowDeveloper(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div style={styles.developerContent}>
+              <div style={styles.developerHeader}>
+                <div style={styles.heartAnimation}>
+                  <i className="fas fa-heart" style={styles.heartIcon}></i>
+                </div>
+                <h3 style={styles.developerTitle}>Made with Love by Hardik</h3>
+                <p style={styles.developerSubtitle}>Full Stack Developer & Problem Solver</p>
+              </div>
+              
+              <div style={styles.socialLinks}>
+                <a 
+                  href="https://linkedin.com/in/your-linkedin" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={styles.socialLink}
+                >
+                  <i className="fab fa-linkedin" style={styles.linkedinIcon}></i>
+                  <span>LinkedIn</span>
+                </a>
+                
+                <a 
+                  href="https://github.com/your-github" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={styles.socialLink}
+                >
+                  <i className="fab fa-github" style={styles.githubIcon}></i>
+                  <span>GitHub</span>
+                </a>
+                
+                <a 
+                  href="https://instagram.com/your-instagram" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={styles.socialLink}
+                >
+                  <i className="fab fa-instagram" style={styles.instagramIcon}></i>
+                  <span>Instagram</span>
+                </a>
+              </div>
+
+              <div style={styles.developerMessage}>
+                <p style={styles.messageText}>
+                  "Building solutions that make a difference in people's lives. 
+                  CivicConnect is my contribution towards creating smarter, more efficient cities."
+                </p>
+              </div>
+
+              <div style={styles.techStack}>
+                <h4 style={styles.techTitle}>Built With:</h4>
+                <div style={styles.techIcons}>
+                  <i className="fab fa-react" style={styles.techIcon} title="React"></i>
+                  <i className="fab fa-node-js" style={styles.techIcon} title="Node.js"></i>
+                  <i className="fas fa-database" style={styles.techIcon} title="MongoDB"></i>
+                  <i className="fab fa-js-square" style={styles.techIcon} title="JavaScript"></i>
+                  <i className="fab fa-css3-alt" style={styles.techIcon} title="CSS3"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Utility Buttons */}
       <div style={isMobile ? styles.utilityButtonsMobile : styles.utilityButtons}>
         <button 
@@ -300,6 +377,13 @@ function Home() {
         >
           <i className="fas fa-book" style={styles.utilityIcon}></i>
           {!isMobile && "About CivicConnect"}
+        </button>
+        <button 
+          style={isMobile ? styles.utilityButtonMobile : styles.utilityButton}
+          onClick={() => setShowDeveloper(true)}
+        >
+          <i className="fas fa-code" style={styles.utilityIcon}></i>
+          {!isMobile && "Developer"}
         </button>
       </div>
 
@@ -543,7 +627,7 @@ function Home() {
             </div>
           </div>
           <p style={isMobile ? styles.footerTextMobile : styles.footerText}>
-            © {new Date().getFullYear()} CivicConnect
+            © {new Date().getFullYear()} CivicConnect | Made with ❤️ by Hardik
           </p>
         </footer>
       </div>
@@ -584,6 +668,14 @@ function Home() {
         @keyframes buttonHover {
           0% { transform: translateY(0); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
           100% { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
+        }
+
+        @keyframes heartbeat {
+          0% { transform: scale(1); }
+          25% { transform: scale(1.1); }
+          50% { transform: scale(1); }
+          75% { transform: scale(1.1); }
+          100% { transform: scale(1); }
         }
 
         input:focus {
@@ -1151,6 +1243,18 @@ const styles = {
     boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
     animation: 'fadeIn 0.3s ease',
   },
+  developerModal: {
+    backgroundColor: 'rgba(19, 28, 46, 0.95)',
+    borderRadius: '20px',
+    padding: '30px',
+    width: '90%',
+    maxWidth: '500px',
+    maxHeight: '80vh',
+    overflowY: 'auto',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+    animation: 'fadeIn 0.3s ease',
+  },
   modalHeader: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -1253,6 +1357,99 @@ const styles = {
   featureList: {
     paddingLeft: '20px',
     margin: 0,
+  },
+
+  // Developer Section Styles
+  developerContent: {
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+  },
+  developerHeader: {
+    marginBottom: '30px',
+  },
+  heartAnimation: {
+    marginBottom: '15px',
+  },
+  heartIcon: {
+    fontSize: '3rem',
+    color: '#e91e63',
+    animation: 'heartbeat 1.5s ease-in-out infinite',
+  },
+  developerTitle: {
+    color: '#4fc3f7',
+    fontSize: '1.8rem',
+    fontWeight: '600',
+    margin: '10px 0 5px 0',
+  },
+  developerSubtitle: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: '1rem',
+    margin: 0,
+  },
+  socialLinks: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '15px',
+    marginBottom: '30px',
+    flexWrap: 'wrap',
+  },
+  socialLink: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '12px 20px',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: '25px',
+    color: 'white',
+    textDecoration: 'none',
+    transition: 'all 0.3s ease',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+  },
+  linkedinIcon: {
+    color: '#0077b5',
+    fontSize: '1.2rem',
+  },
+  githubIcon: {
+    color: '#ffffff',
+    fontSize: '1.2rem',
+  },
+  instagramIcon: {
+    color: '#e4405f',
+    fontSize: '1.2rem',
+  },
+  developerMessage: {
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    padding: '20px',
+    borderRadius: '15px',
+    marginBottom: '25px',
+    borderLeft: '4px solid #4fc3f7',
+  },
+  messageText: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: '0.95rem',
+    lineHeight: '1.6',
+    margin: 0,
+    fontStyle: 'italic',
+  },
+  techStack: {
+    marginTop: '20px',
+  },
+  techTitle: {
+    color: '#4fc3f7',
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    marginBottom: '15px',
+  },
+  techIcons: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '20px',
+    flexWrap: 'wrap',
+  },
+  techIcon: {
+    fontSize: '2rem',
+    color: 'rgba(255, 255, 255, 0.7)',
+    transition: 'all 0.3s ease',
   },
 };
 
