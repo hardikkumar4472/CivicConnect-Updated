@@ -2,7 +2,7 @@ Let's have a try: https://civicconnect-nfew.onrender.com/
 
 # CivicConnect-A-Public-Grievance-Automation-System
 
-CivicConnect is a smart city automation platform designed to bridge the gap between citizens and municipal authorities. Our solution streamlines the issue reporting and resolution process, eliminating the inefficiencies of traditional systems that involve lengthy paperwork and delayed responses.
+CivicConnect is a smart city automation platform designed to bridge the gap between citizens and municipal authorities. Our solution streamlines the issue reporting and resolution process, eliminating the inefficiencies of traditional systems that involve lengthy paperwork and delayed response.
 
 🚀 Features
 For Citizens
