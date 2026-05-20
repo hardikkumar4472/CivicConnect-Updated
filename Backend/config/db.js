@@ -8,4 +8,5 @@ const connectDB=async()=>{
         console.log("Error while connected mongoDB", err.message);
     }
 }
+
 export default connectDB;
